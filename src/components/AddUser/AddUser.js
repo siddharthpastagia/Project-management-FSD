@@ -1,9 +1,34 @@
-import React from "react";
-import { Container, Row, Col, FormControl, Button } from "react-bootstrap";
+import React, { useState } from "react";
+import {
+  Container,
+  Row,
+  Col,
+  FormControl,
+  Button,
+  ListGroup
+} from "react-bootstrap";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import "./AddUser.scss";
 
 export const AddUser = () => {
+  const usersList = [
+    {
+      firstName: "Sid",
+      lastName: "pastagiya",
+      empId: 393470
+    },
+    {
+      firstName: "Palak",
+      lastName: "pastagiya",
+      empId: 393471
+    },
+    {
+      firstName: "Zeeva",
+      lastName: "pastagiya",
+      empId: 393472
+    }
+  ];
   const formik = useFormik({
     initialValues: {
       firstName: "",
@@ -16,6 +41,7 @@ export const AddUser = () => {
       empId: Yup.string().required("Please enter Employee ID")
     })
   });
+  const [users, setUsers] = useState(usersList);
   return (
     <>
       <Container>
@@ -92,6 +118,40 @@ export const AddUser = () => {
                 </Button>
               </div>
             </form>
+          </Col>
+        </Row>
+        <hr />
+        <Row>
+          <Col>
+            <ListGroup>
+              {users.map(user => {
+                return (
+                  <ListGroup.Item className="user-list" key={user.empId}>
+                    <div>
+                      <p>FirstName : {user.firstName}</p>
+                      <p>LastName : {user.lastName}</p>
+                      <p>Employee ID : {user.empId}</p>
+                    </div>
+                    <div>
+                      <Button variant="outline-primary">Edit</Button>
+                      <br />
+                      <Button
+                        variant="outline-secondary"
+                        className="mt-2"
+                        onClick={() => {
+                          const filterList = usersList.filter(
+                            m => m.empId !== user.empId
+                          );
+                          setUsers(filterList);
+                        }}
+                      >
+                        Delete
+                      </Button>
+                    </div>
+                  </ListGroup.Item>
+                );
+              })}
+            </ListGroup>
           </Col>
         </Row>
       </Container>

@@ -10,25 +10,49 @@ import {
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import "./AddUser.scss";
+import * as _ from "lodash";
 
 export const AddUser = () => {
   const usersList = [
     {
       firstName: "Sid",
-      lastName: "pastagiya",
-      empId: 393470
+      lastName: "Patel",
+      empId: "393470"
     },
     {
       firstName: "Palak",
-      lastName: "pastagiya",
-      empId: 393471
+      lastName: "Pastagiya",
+      empId: "393471"
     },
     {
       firstName: "Zeeva",
-      lastName: "pastagiya",
-      empId: 393472
+      lastName: "Sharma",
+      empId: "393472"
     }
   ];
+  const handleChange = e => {
+    let newList = [];
+    if (e.target.value !== "") {
+      newList = usersList.filter(item => {
+        const fData = item.firstName.toLowerCase();
+        const lData = item.lastName.toLowerCase();
+        const filter = e.target.value.toLowerCase();
+        return (
+          fData.includes(filter) ||
+          lData.includes(filter) ||
+          item.empId.includes(filter)
+        );
+      });
+    } else {
+      newList = usersList;
+    }
+    setUsers(newList);
+  };
+  const handleSort = field => {
+    const sortFirstName = _.sortBy(usersList, field);
+    setUsers(sortFirstName);
+    // setActiveSort(true);
+  };
   const formik = useFormik({
     initialValues: {
       firstName: "",
@@ -42,6 +66,7 @@ export const AddUser = () => {
     })
   });
   const [users, setUsers] = useState(usersList);
+  // const [activeSort, setActiveSort] = useState(false);
   return (
     <>
       <Container>
@@ -121,6 +146,48 @@ export const AddUser = () => {
           </Col>
         </Row>
         <hr />
+        <Row>
+          <Col xs={12} sm={6}>
+            <FormControl
+              placeholder="Search"
+              onChange={handleChange}
+              className="mb-4"
+            />
+          </Col>
+          <Col xs={12} sm={6}>
+            Sort By:
+            {/* {users.keys.map(key => {
+              <Button
+                variant="outline-primary"
+                className="ml-2"
+                onClick={() => handleSort(key)}
+              >
+                {key}
+              </Button>;
+            })} */}
+            <Button
+              variant="outline-primary"
+              className="ml-2"
+              onClick={() => handleSort("firstName")}
+            >
+              First Name
+            </Button>
+            <Button
+              variant="outline-primary"
+              className="ml-2"
+              onClick={() => handleSort("lastName")}
+            >
+              Last Name
+            </Button>
+            <Button
+              variant="outline-primary"
+              className="ml-2"
+              onClick={() => handleSort("empID")}
+            >
+              ID
+            </Button>
+          </Col>
+        </Row>
         <Row>
           <Col>
             <ListGroup>

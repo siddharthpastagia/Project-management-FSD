@@ -161,7 +161,7 @@ app.use("/project", projectRoutes);
 // ADD TASK ROUTES
 taskRoutes.route("/add").post(function(req, res) {
   let task = new Task(req.body);
-  project
+  task
     .save()
     .then(task => {
       res.status(200).json({ message: "Task added successfully" });
@@ -170,6 +170,8 @@ taskRoutes.route("/add").post(function(req, res) {
       res.status(400).send("Adding new task failed");
     });
 });
+
+app.use("/task", taskRoutes);
 
 //--------------------------------------------------------------
 app.listen(PORT, function() {

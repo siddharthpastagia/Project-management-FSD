@@ -19,9 +19,6 @@ let Task = new Schema({
   },
   user: {
     type: String
-  },
-  project: {
-    type: String
   }
 });
 module.exports = mongoose.model("Task", Task);

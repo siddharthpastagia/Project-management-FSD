@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Container,
   Row,
   Col,
   FormControl,
   Button,
-  ListGroup,
   Alert,
   Form,
   Modal,
-  FormGroup,
   FormLabel,
   InputGroup
 } from "react-bootstrap";
@@ -28,7 +26,7 @@ export const AddTask = () => {
 
   let [startDate, setStartDate] = useState(initialStartDate);
   let [endDate, setEndDate] = useState(initialEndDate);
-  let [isParentTask, setisParentTask] = useState(false);
+  let [isParentTask, setIsParentTask] = useState(false);
 
   let [priority, setPriority] = useState("");
   let [statusMessage, setStatusMessage] = useState({
@@ -52,7 +50,7 @@ export const AddTask = () => {
     setEndDate(initialEndDate);
     setPriority("");
     setUser("");
-    setisParentTask(false);
+    setIsParentTask(false);
   }
 
   function getAfterDate(num) {
@@ -87,12 +85,12 @@ export const AddTask = () => {
     validationSchema: Yup.object({
       taskName: Yup.string().required("Please enter Task Name"),
       startDate: Yup.date().when("isParentTask", {
-        is: true,
+        is: false,
         then: Yup.date().required("Please enter start date"),
         otherwise: Yup.date()
       }),
       endDate: Yup.date().when("isParentTask", {
-        is: true,
+        is: false,
         then: Yup.date()
           .required("Please enter end date")
           .test(
@@ -104,16 +102,26 @@ export const AddTask = () => {
           ),
         otherwise: Yup.date()
       }),
-      priority: Yup.number().required(
-        "Please select proper range between 0 to 30 for Priority"
-      ),
+      priority: Yup.number().when("isParentTask", {
+        is: false,
+        then: Yup.number().required(
+          "Please select proper range between 0 to 30 for Priority"
+        ),
+        otherwise: Yup.number()
+      }),
       isParentTask: Yup.boolean(),
-      user: Yup.string().required("Please select Manager from serach")
+      user: Yup.string().when("isParentTask", {
+        is: false,
+        then: Yup.string().required("Please select User from serach"),
+        otherwise: Yup.string()
+      })
     }),
     onSubmit: async value => {
-      if (!value.isParentTask) {
+      if (value.isParentTask) {
         delete value.startDate;
         delete value.endDate;
+        delete value.priority;
+        delete value.user;
       }
       try {
         const resp = await addNewTask(value);
@@ -189,6 +197,7 @@ export const AddTask = () => {
                 min="0"
                 max="30"
                 step="1"
+                disabled={formik.values.isParentTask}
                 errors={formik.errors.priority}
                 className={
                   formik.touched.priority
@@ -203,7 +212,7 @@ export const AddTask = () => {
                 placeholder="Start Date"
                 name="startDate"
                 type="date"
-                disabled={!formik.values.isParentTask}
+                disabled={formik.values.isParentTask}
                 required={false}
                 errors={formik.errors.startDate}
                 className={
@@ -222,7 +231,7 @@ export const AddTask = () => {
                 placeholder="End Date"
                 name="endDate"
                 type="date"
-                disabled={!formik.values.isParentTask}
+                disabled={formik.values.isParentTask}
                 required={false}
                 errors={formik.errors.endDate}
                 className={
@@ -242,6 +251,8 @@ export const AddTask = () => {
                   required
                   readOnly
                   name="user"
+                  disabled={formik.values.isParentTask}
+                  required={false}
                   errors={formik.errors.user}
                   className={
                     formik.touched.user

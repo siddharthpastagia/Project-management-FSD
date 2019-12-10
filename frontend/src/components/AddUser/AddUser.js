@@ -1,39 +1,103 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Row,
   Col,
   FormControl,
   Button,
-  ListGroup
+  ListGroup,
+  Alert
 } from "react-bootstrap";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import "./AddUser.scss";
+import {
+  getAllUsers,
+  addNewUser,
+  updateUserById,
+  deleteUserById
+} from "../../api/Api";
+
 import * as _ from "lodash";
 
 export const AddUser = () => {
-  const usersList = [
-    {
-      firstName: "Sid",
-      lastName: "Patel",
-      empId: "393470"
-    },
-    {
-      firstName: "Palak",
-      lastName: "Pastagiya",
-      empId: "393471"
-    },
-    {
-      firstName: "Zeeva",
-      lastName: "Sharma",
-      empId: "393472"
+  let [userUpdated, setUserUpdated] = useState(false);
+  let [users, setUsers] = useState([]);
+  let [userList, setUserList] = useState([]);
+  let [sortMode, setSortMode] = useState(false);
+  let [editMode, setEditMode] = useState(false);
+  let [userId, setUserId] = useState("");
+  let [firstName, setFirstName] = useState("");
+  let [firstNameSort, setFirstNameSort] = useState(false);
+  let [lastName, setLastName] = useState("");
+  let [lastNameSort, setLastNameSort] = useState(false);
+  let [empId, setEmpId] = useState("");
+  let [empIdSort, setEmpIdSort] = useState(false);
+  let [statusMessage, setStatusMessage] = useState({
+    show: false,
+    message: "",
+    variant: ""
+  });
+
+  async function fetchAllUsers() {
+    try {
+      setUsers(await getAllUsers());
+      setUserList(await getAllUsers());
+      setUserUpdated(false);
+    } catch (err) {
+      setStatusMessage({
+        ...statusMessage,
+        show: true,
+        message: err,
+        variant: "danger"
+      });
     }
-  ];
+  }
+  function editUser(user) {
+    setEditMode(true);
+    setUserId(user._id);
+    setFirstName(user.firstName);
+    setLastName(user.lastName);
+    setEmpId(user.empId);
+    setSortMode(false);
+  }
+
+  async function deleteUser(user) {
+    try {
+      const resp = await deleteUserById(user);
+      setUserUpdated(true);
+      setSortMode(false);
+      setStatusMessage({
+        ...statusMessage,
+        show: true,
+        message: resp.message,
+        variant: "success"
+      });
+    } catch (err) {
+      setStatusMessage({
+        ...statusMessage,
+        show: true,
+        message: err,
+        variant: "danger"
+      });
+    }
+  }
+
+  function resetFormState() {
+    setFirstName("");
+    setLastName("");
+    setEmpId("");
+    setEditMode(false);
+  }
+
+  useEffect(() => {
+    fetchAllUsers();
+  }, [userUpdated]);
+
   const handleChange = e => {
     let newList = [];
     if (e.target.value !== "") {
-      newList = usersList.filter(item => {
+      newList = userList.filter(item => {
         const fData = item.firstName.toLowerCase();
         const lData = item.lastName.toLowerCase();
         const filter = e.target.value.toLowerCase();
@@ -44,34 +108,70 @@ export const AddUser = () => {
         );
       });
     } else {
-      newList = usersList;
+      newList = userList;
     }
     setUsers(newList);
   };
   const handleSort = field => {
-    const sortFirstName = _.sortBy(usersList, field);
-    setUsers(sortFirstName);
-    // setActiveSort(true);
+    setSortMode(true);
+    const sortByField = _.sortBy(users, field);
+    setUsers(sortByField);
   };
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
-      firstName: "",
-      lastName: "",
-      empId: ""
+      userId: userId,
+      firstName: firstName,
+      lastName: lastName,
+      empId: empId
     },
     validationSchema: Yup.object({
       firstName: Yup.string().required("Please enter First Name"),
       lastName: Yup.string().required("Please enter Last Name"),
       empId: Yup.string().required("Please enter Employee ID")
-    })
+    }),
+    onSubmit: async value => {
+      try {
+        const resp = !editMode
+          ? await addNewUser(value)
+          : await updateUserById(value);
+        setUserUpdated(true);
+        setSortMode(false);
+        setStatusMessage({
+          ...statusMessage,
+          show: true,
+          message: resp.message,
+          variant: "success"
+        });
+      } catch (err) {
+        setStatusMessage({
+          ...statusMessage,
+          show: true,
+          message: err,
+          variant: "danger"
+        });
+      }
+      resetFormState();
+      formik.resetForm();
+    }
   });
-  const [users, setUsers] = useState(usersList);
+  //const [users, setUsers] = useState(usersList);
   // const [activeSort, setActiveSort] = useState(false);
   return (
     <>
       <Container>
         <Row>
           <Col className="mt-5">
+            <Alert
+              variant={statusMessage.variant}
+              show={statusMessage.show}
+              onClose={() => {
+                setStatusMessage({ ...statusMessage, show: false });
+              }}
+              dismissible
+            >
+              {statusMessage.message}
+            </Alert>
             <form onSubmit={formik.handleSubmit}>
               <FormControl
                 required
@@ -131,11 +231,12 @@ export const AddUser = () => {
                   type="submit"
                   className="ml-2 mr-2"
                 >
-                  Add
+                  {editMode ? "Update" : "Add"}
                 </Button>
                 <Button
                   variant="outline-secondary"
                   onClick={() => {
+                    resetFormState();
                     formik.resetForm();
                   }}
                 >
@@ -156,60 +257,68 @@ export const AddUser = () => {
           </Col>
           <Col xs={12} sm={6}>
             Sort By:
-            {/* {users.keys.map(key => {
-              <Button
-                variant="outline-primary"
-                className="ml-2"
-                onClick={() => handleSort(key)}
-              >
-                {key}
-              </Button>;
-            })} */}
             <Button
               variant="outline-primary"
-              className="ml-2"
-              onClick={() => handleSort("firstName")}
+              className={sortMode && firstNameSort ? "active ml-2" : "ml-2"}
+              onClick={() => {
+                handleSort("firstName");
+                setFirstNameSort(true);
+                setLastNameSort(false);
+                setEmpIdSort(false);
+              }}
             >
               First Name
             </Button>
             <Button
               variant="outline-primary"
-              className="ml-2"
-              onClick={() => handleSort("lastName")}
+              className={sortMode && lastNameSort ? "active ml-2" : "ml-2"}
+              onClick={() => {
+                handleSort("lastName");
+                setLastNameSort(true);
+                setFirstNameSort(false);
+                setEmpIdSort(false);
+              }}
             >
               Last Name
             </Button>
             <Button
               variant="outline-primary"
-              className="ml-2"
-              onClick={() => handleSort("empID")}
+              className={sortMode && empIdSort ? "active ml-2" : "ml-2"}
+              onClick={() => {
+                handleSort("empId");
+                setEmpIdSort(true);
+                setFirstNameSort(false);
+                setLastNameSort(false);
+              }}
             >
               ID
             </Button>
           </Col>
         </Row>
-        <Row>
+        <Row className="mt-4">
           <Col>
             <ListGroup>
               {users.map(user => {
                 return (
-                  <ListGroup.Item className="user-list" key={user.empId}>
+                  <ListGroup.Item className="user-list" key={user._id}>
                     <div>
                       <p>FirstName : {user.firstName}</p>
                       <p>LastName : {user.lastName}</p>
                       <p>Employee ID : {user.empId}</p>
                     </div>
                     <div>
-                      <Button variant="outline-primary">Edit</Button>
+                      <Button
+                        variant="outline-primary"
+                        onClick={() => editUser(user)}
+                      >
+                        Edit
+                      </Button>
                       <br />
                       <Button
                         variant="outline-secondary"
                         className="mt-2"
                         onClick={() => {
-                          const filterList = usersList.filter(
-                            m => m.empId !== user.empId
-                          );
-                          setUsers(filterList);
+                          deleteUser(user);
                         }}
                       >
                         Delete

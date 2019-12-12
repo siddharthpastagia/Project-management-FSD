@@ -77,3 +77,22 @@ export const addNewTask = async task => {
     .then(resp => resp.data)
     .catch(err => Promise.reject(err));
 };
+
+// get all tasks
+
+export const getAllTasks = async () => {
+  return axios
+    .get(`${apiPath}/task`, { headers: headers })
+    .then(resp => resp.data)
+    .catch(err => Promise.reject(err));
+};
+
+// complete task
+export const updateTaskAsComplete = async task => {
+  return axios
+    .put(`${apiPath}/task/complete/${task._id}`, task, {
+      headers: headers
+    })
+    .then(resp => resp.data)
+    .catch(err => Promise.reject(err));
+};

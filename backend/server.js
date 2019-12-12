@@ -171,6 +171,18 @@ taskRoutes.route("/add").post(function(req, res) {
     });
 });
 
+// fetch all tasks
+
+taskRoutes.route("/").get(function(req, res) {
+  Task.find(function(err, resp) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(resp);
+    }
+  });
+});
+
 app.use("/task", taskRoutes);
 
 //--------------------------------------------------------------

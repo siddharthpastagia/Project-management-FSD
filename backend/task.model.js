@@ -17,8 +17,16 @@ let Task = new Schema({
   priority: {
     type: Number
   },
-  user: {
+  status: {
     type: String
+  },
+  parent_id: {
+    type: Schema.Types.ObjectId,
+    ref: "Parent"
+  },
+  project_id: {
+    type: Schema.Types.ObjectId,
+    ref: "Project"
   }
 });
 module.exports = mongoose.model("Task", Task);

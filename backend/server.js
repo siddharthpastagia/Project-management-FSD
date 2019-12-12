@@ -11,6 +11,7 @@ const projectRoutes = express.Router();
 let Project = require("./project.model");
 const taskRoutes = express.Router();
 let Task = require("./task.model");
+let Parent = require("./parent.model");
 app.use(cors());
 app.use(bodyParser.json());
 

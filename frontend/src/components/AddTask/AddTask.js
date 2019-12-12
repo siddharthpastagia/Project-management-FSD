@@ -16,6 +16,7 @@ import * as Yup from "yup";
 import SearchModal from "../common/SearchModal";
 import { addNewTask } from "../../api/Api";
 import * as moment from "moment";
+import { func } from "prop-types";
 
 export const AddTask = () => {
   const initialStartDate = formatDate(new Date());
@@ -62,13 +63,32 @@ export const AddTask = () => {
   }
 
   let [showUserModal, setShowUserModal] = useState(false);
+  let [showProjectModal, setShowProjectModal] = useState(false);
+  let [showParentModal, setShowParentModal] = useState(false);
+
   let [user, setUser] = useState("");
 
   function onCloseManagerModal(val) {
     setShowUserModal(false);
   }
+
+  function onCloseProjectModal(val) {
+    setShowProjectModal(false);
+  }
+
+  function onCloseParentModal(val) {
+    setShowParentModal(false);
+  }
   function onSearchManager(data, setFieldValue) {
     setFieldValue("user", data.name);
+  }
+
+  function onSearchProject(data, setFieldValue) {
+    setFieldValue("project", data.name);
+  }
+
+  function onSearchParent(data, setFieldValue) {
+    setFieldValue("parent", data.name);
   }
 
   const formik = useFormik({
@@ -83,6 +103,7 @@ export const AddTask = () => {
       user: user
     },
     validationSchema: Yup.object({
+      project: Yup.string().required("Please select Project"),
       taskName: Yup.string().required("Please enter Task Name"),
       startDate: Yup.date().when("isParentTask", {
         is: false,
@@ -114,6 +135,11 @@ export const AddTask = () => {
         is: false,
         then: Yup.string().required("Please select User from serach"),
         otherwise: Yup.string()
+      }),
+      parent: Yup.string().when("isParentTask", {
+        is: false,
+        then: Yup.string().required("Please select parent task from serach"),
+        otherwise: Yup.string()
       })
     }),
     onSubmit: async value => {
@@ -122,6 +148,7 @@ export const AddTask = () => {
         delete value.endDate;
         delete value.priority;
         delete value.user;
+        delete value.parent;
       }
       try {
         const resp = await addNewTask(value);
@@ -159,6 +186,37 @@ export const AddTask = () => {
               {statusMessage.message}
             </Alert>
             <form onSubmit={formik.handleSubmit}>
+              <InputGroup>
+                <FormControl
+                  required
+                  readOnly
+                  name="project"
+                  required
+                  errors={formik.errors.project}
+                  className={
+                    formik.touched.project
+                      ? formik.errors.project
+                        ? "is-invalid mb-2 mt-2"
+                        : "is-valid mb-2 mt-2"
+                      : "mb-2 mt-2"
+                  }
+                  {...formik.getFieldProps("project")}
+                ></FormControl>
+                <InputGroup.Append>
+                  <Button
+                    variant="outline-primary"
+                    onClick={() => {
+                      setShowProjectModal(true);
+                    }}
+                  >
+                    Search Project
+                  </Button>
+                </InputGroup.Append>
+              </InputGroup>
+
+              <FormControl.Feedback type="invalid">
+                {formik.errors.user}
+              </FormControl.Feedback>
               <FormControl
                 required
                 placeholder="Task name"
@@ -208,6 +266,38 @@ export const AddTask = () => {
                 }
                 {...formik.getFieldProps("priority")}
               ></FormControl>
+              <InputGroup>
+                <FormControl
+                  required
+                  readOnly
+                  name="parent"
+                  disabled={formik.values.isParentTask}
+                  required={false}
+                  errors={formik.errors.parent}
+                  className={
+                    formik.touched.parent
+                      ? formik.errors.parent
+                        ? "is-invalid mb-2 mt-2"
+                        : "is-valid mb-2 mt-2"
+                      : "mb-2 mt-2"
+                  }
+                  {...formik.getFieldProps("parent")}
+                ></FormControl>
+                <InputGroup.Append>
+                  <Button
+                    variant="outline-primary"
+                    onClick={() => {
+                      setShowParentModal(true);
+                    }}
+                  >
+                    Search Parent Task
+                  </Button>
+                </InputGroup.Append>
+              </InputGroup>
+
+              <FormControl.Feedback type="invalid">
+                {formik.errors.user}
+              </FormControl.Feedback>
               <FormControl
                 placeholder="Start Date"
                 name="startDate"
@@ -308,6 +398,32 @@ export const AddTask = () => {
                 ]}
                 onSearch={data => {
                   onSearchManager(data, formik.setFieldValue);
+                }}
+              />
+              <SearchModal
+                id="searchProject"
+                heading="Serach Project"
+                showModal={showProjectModal}
+                onCloseModal={onCloseProjectModal}
+                data={[
+                  { name: "Project A", id: "1" },
+                  { name: "Project B", id: "2" }
+                ]}
+                onSearch={data => {
+                  onSearchProject(data, formik.setFieldValue);
+                }}
+              />
+              <SearchModal
+                id="searchParent"
+                heading="Serach Parent Task"
+                showModal={showParentModal}
+                onCloseModal={onCloseParentModal}
+                data={[
+                  { name: "Parent A", id: "1" },
+                  { name: "Parent B", id: "2" }
+                ]}
+                onSearch={data => {
+                  onSearchParent(data, formik.setFieldValue);
                 }}
               />
             </form>

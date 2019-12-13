@@ -1,0 +1,12 @@
+.btn-outline-primary.disabled,
+.btn-outline-primary:disabled {
+  cursor: not-allowed;
+}
+
+.modal-label {
+  border: 1px solid #ced4da;
+  flex: 1 1 auto;
+  align-self: stretch;
+  padding: 8px;
+  margin-bottom: 0;
+}

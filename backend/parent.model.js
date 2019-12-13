@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-let Parent = new Schema({
-  parent_task: {
+let ParentTask = new Schema({
+  taskName: {
     type: String
   }
 });
-module.exports = mongoose.model("Parent", Parent);
+module.exports = mongoose.model("ParentTask", ParentTask);

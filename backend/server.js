@@ -11,7 +11,8 @@ const projectRoutes = express.Router();
 let Project = require("./project.model");
 const taskRoutes = express.Router();
 let Task = require("./task.model");
-let Parent = require("./parent.model");
+const parentTaskRoutes = express.Router();
+let ParentTask = require("./parent.model");
 app.use(cors());
 app.use(bodyParser.json());
 
@@ -97,14 +98,27 @@ app.use("/user", userRoutes);
 //--------------------------------------------------------------
 // Project routes
 //1 . Fetch All project
+// projectRoutes.route("/").get(function(req, res) {
+//   Project.find(function(err, resp) {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       res.json(resp);
+//     }
+//   });
+// });
+
+//1 . Fetch All project
 projectRoutes.route("/").get(function(req, res) {
-  Project.find(function(err, resp) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.json(resp);
-    }
-  });
+  Project.find({})
+    .populate("numOfTask")
+    .exec(function(err, resp) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.json(resp);
+      }
+    });
 });
 
 //2. Add new project
@@ -160,6 +174,7 @@ projectRoutes.route("/delete/:id").get(function(req, res) {
 app.use("/project", projectRoutes);
 //--------------------------------------------------------------------------
 // ADD TASK ROUTES
+// ADD TASK ROUTES
 taskRoutes.route("/add").post(function(req, res) {
   let task = new Task(req.body);
   task
@@ -184,7 +199,64 @@ taskRoutes.route("/").get(function(req, res) {
   });
 });
 
+//fetch task by project Id
+taskRoutes.route("/project/:id").get(function(req, res) {
+  Task.find({ project: req.params.id }, function(err, resp) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(resp);
+    }
+  });
+});
+
+taskRoutes.route("/complete/:id").put(function(req, res) {
+  Task.findById(req.params.id, function(err, task) {
+    if (!task) res.status(404).send("Project data is not found");
+    else task.status = "Completed";
+
+    task
+      .save()
+      .then(task => {
+        res.json({ message: "Task Completed successfully" });
+      })
+      .catch(err => {
+        res.status(400).send("Task completion is not possible");
+      });
+  });
+});
+
 app.use("/task", taskRoutes);
+
+//--------------- Parent task routes ---------------------
+
+// fetch all parent tasks
+
+parentTaskRoutes.route("/").get(function(req, res) {
+  ParentTask.find(function(err, resp) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(resp);
+    }
+  });
+});
+
+// add parent task
+
+parentTaskRoutes.route("/add").post(function(req, res) {
+  let parentTask = new ParentTask(req.body);
+  parentTask
+    .save()
+    .then(parentTask => {
+      res.status(200).json({ message: "Parent Task added successfully" });
+    })
+    .catch(err => {
+      res.status(400).send("Adding new Parent task failed");
+    });
+});
+
+app.use("/parentTask", parentTaskRoutes);
 
 //--------------------------------------------------------------
 app.listen(PORT, function() {

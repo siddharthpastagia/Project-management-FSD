@@ -396,7 +396,11 @@ export const AddProject = () => {
                           {project.endDate && formatDate(project.endDate)}
                         </span>
                       </div>
-
+                      <div>
+                        <span className="mr-2">
+                          No of tasks: {project.numOfTask}
+                        </span>
+                      </div>
                       {/* <p>Manager : {project.manager}</p> */}
                     </div>
                     <ListGroup>

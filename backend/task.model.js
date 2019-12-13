@@ -20,11 +20,11 @@ let Task = new Schema({
   status: {
     type: String
   },
-  parent_id: {
+  parentTask: {
     type: Schema.Types.ObjectId,
-    ref: "Parent"
+    ref: "ParentTask"
   },
-  project_id: {
+  project: {
     type: Schema.Types.ObjectId,
     ref: "Project"
   }

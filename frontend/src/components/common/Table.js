@@ -6,15 +6,19 @@ import "react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.min.c
 
 const Table = props => {
   const { SearchBar } = Search;
-  const { data, columns, keyField, search, clickedRow } = props;
-  const rowEvents = {
+  const { data, columns, keyField, search, rowClickHandler } = props;
+  const rowStyle = rowClickHandler
+    ? { cursor: "pointer" }
+    : { cursor: "default" };
+
+  const rowClickEvents = {
     onClick: (e, row, rowIndex) => {
-      if (clickedRow) {
-        clickedRow(row, rowIndex);
+      if (rowClickHandler) {
+        rowClickHandler(row, rowIndex);
       }
     }
   };
-  const rowStyle = clickedRow ? { cursor: "pointer" } : { cursor: "default" };
+
   return (
     <ToolkitProvider keyField="id" data={data} columns={columns} search>
       {props => (
@@ -24,9 +28,9 @@ const Table = props => {
           <BootstrapTable
             striped
             condensed
-            rowEvents={rowEvents}
             rowStyle={rowStyle}
-            noDataIndication="No records"
+            rowEvents={rowClickEvents}
+            noDataIndication="No records found!!"
             {...props.baseProps}
           />
         </div>

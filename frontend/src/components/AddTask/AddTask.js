@@ -14,15 +14,20 @@ import {
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import SearchModal from "../common/SearchModal";
-import { addNewTask } from "../../api/Api";
+import {
+  addNewTask,
+  getAllUsers,
+  getAllProject,
+  getAllParentTasks,
+  addParentTask
+} from "../../api/Api";
 import * as moment from "moment";
-import { func } from "prop-types";
+import "./AddTask.scss";
 
 export const AddTask = () => {
   const initialStartDate = formatDate(new Date());
   const initialEndDate = formatDate(getAfterDate(1));
 
-  let [taskId, setTaskId] = useState("");
   let [taskName, setTaskName] = useState("");
 
   let [startDate, setStartDate] = useState(initialStartDate);
@@ -35,6 +40,19 @@ export const AddTask = () => {
     message: "",
     variant: ""
   });
+
+  let [user, setUser] = useState("");
+  let [userList, setUserList] = useState([]);
+  let [showUserModal, setShowUserModal] = useState(false);
+
+  let [project, setProject] = useState("");
+  let [projectList, setProjectList] = useState([]);
+  let [showProjectModal, setShowProjectModal] = useState(false);
+
+  let [parentTask, setParentTask] = useState({});
+  let [parentTaskList, setParentTaskList] = useState([]);
+  let [showParentModal, setShowParentModal] = useState(false);
+
   //Call this function after setStatusMessag to autoHide alert message
   function autoHideAlert() {
     setTimeout(() => {
@@ -46,11 +64,13 @@ export const AddTask = () => {
   }
 
   function resetFormState() {
+    setProject("");
+    setParentTask("");
+    setUser("");
     setTaskName("");
     setStartDate(initialStartDate);
     setEndDate(initialEndDate);
     setPriority("");
-    setUser("");
     setIsParentTask(false);
   }
 
@@ -61,49 +81,57 @@ export const AddTask = () => {
   function formatDate(date) {
     return moment(date).format("YYYY-MM-DD");
   }
-
-  let [showUserModal, setShowUserModal] = useState(false);
-  let [showProjectModal, setShowProjectModal] = useState(false);
-  let [showParentModal, setShowParentModal] = useState(false);
-
-  let [user, setUser] = useState("");
-
-  function onCloseManagerModal(val) {
+  ///////////////////////////////////////////
+  //Search User
+  const searchUser = async () => {
+    setUserList(await getAllUsers());
+    setShowUserModal(true);
+  };
+  function onCloseUserModal(val) {
     setShowUserModal(false);
   }
-
+  function onSearchUser(data, setFieldValue) {
+    setFieldValue("user", data);
+  }
+  //////////////////////////////////////////
+  //Serach Project
+  const searchProject = async () => {
+    setProjectList(await getAllProject());
+    setShowProjectModal(true);
+  };
   function onCloseProjectModal(val) {
     setShowProjectModal(false);
   }
-
+  function onSearchProject(data, setFieldValue) {
+    setFieldValue("project", data);
+  }
+  ////////////////////////////////////////////
+  //Search Parent Task
+  const searchParentTask = async () => {
+    setParentTaskList(await getAllParentTasks());
+    setShowParentModal(true);
+  };
   function onCloseParentModal(val) {
     setShowParentModal(false);
   }
-  function onSearchManager(data, setFieldValue) {
-    setFieldValue("user", data.name);
-  }
-
-  function onSearchProject(data, setFieldValue) {
-    setFieldValue("project", data.name);
-  }
-
   function onSearchParent(data, setFieldValue) {
-    setFieldValue("parent", data.name);
+    setFieldValue("parentTask", data);
   }
-
+  //////////////////////////////////////////////////
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      taskId: taskId,
+      project: project,
+      parentTask: parentTask,
+      user: user,
       taskName: taskName,
       startDate: startDate,
       endDate: endDate,
       priority: priority,
-      isParentTask: isParentTask,
-      user: user
+      isParentTask: isParentTask
     },
     validationSchema: Yup.object({
-      project: Yup.string().required("Please select Project"),
+      project: Yup.object().required("Please select Project"),
       taskName: Yup.string().required("Please enter Task Name"),
       startDate: Yup.date().when("isParentTask", {
         is: false,
@@ -136,10 +164,10 @@ export const AddTask = () => {
         then: Yup.string().required("Please select User from serach"),
         otherwise: Yup.string()
       }),
-      parent: Yup.string().when("isParentTask", {
+      parentTask: Yup.object().when("isParentTask", {
         is: false,
-        then: Yup.string().required("Please select parent task from serach"),
-        otherwise: Yup.string()
+        then: Yup.object(),
+        otherwise: Yup.object()
       })
     }),
     onSubmit: async value => {
@@ -148,7 +176,23 @@ export const AddTask = () => {
         delete value.endDate;
         delete value.priority;
         delete value.user;
-        delete value.parent;
+        delete value.parentTask;
+        try {
+          const resp = await addParentTask(value);
+          setStatusMessage({
+            ...statusMessage,
+            show: true,
+            message: resp.message,
+            variant: "success"
+          });
+        } catch (err) {
+          setStatusMessage({
+            ...statusMessage,
+            show: true,
+            message: err,
+            variant: "danger"
+          });
+        }
       }
       try {
         const resp = await addNewTask(value);
@@ -187,11 +231,16 @@ export const AddTask = () => {
             </Alert>
             <form onSubmit={formik.handleSubmit}>
               <InputGroup>
+                {formik.values.project.projectName ? (
+                  <FormLabel className="modal-label">{`${formik.values.project.projectName}`}</FormLabel>
+                ) : (
+                  <FormLabel className="modal-label"></FormLabel>
+                )}
                 <FormControl
                   required
                   readOnly
+                  type="hidden"
                   name="project"
-                  required
                   errors={formik.errors.project}
                   className={
                     formik.touched.project
@@ -202,21 +251,17 @@ export const AddTask = () => {
                   }
                   {...formik.getFieldProps("project")}
                 ></FormControl>
+
                 <InputGroup.Append>
-                  <Button
-                    variant="outline-primary"
-                    onClick={() => {
-                      setShowProjectModal(true);
-                    }}
-                  >
+                  <Button variant="outline-primary" onClick={searchProject}>
                     Search Project
                   </Button>
                 </InputGroup.Append>
               </InputGroup>
-
               <FormControl.Feedback type="invalid">
-                {formik.errors.user}
+                {formik.errors.project}
               </FormControl.Feedback>
+
               <FormControl
                 required
                 placeholder="Task name"
@@ -243,11 +288,11 @@ export const AddTask = () => {
                 label="Parent Task"
                 {...formik.getFieldProps("isParentTask")}
               />
-
               <FormLabel>Priority</FormLabel>
               <FormControl.Feedback type="touched">
-                {formik.errors.priority}
+                {formik.errors.isParentTask}
               </FormControl.Feedback>
+
               <FormControl
                 placeholder="priority"
                 name="priority"
@@ -266,38 +311,44 @@ export const AddTask = () => {
                 }
                 {...formik.getFieldProps("priority")}
               ></FormControl>
+
               <InputGroup>
+                {formik.values.parentTask &&
+                formik.values.parentTask.taskName ? (
+                  <FormLabel className="modal-label">{`${formik.values.parentTask.taskName}`}</FormLabel>
+                ) : (
+                  <FormLabel className="modal-label"></FormLabel>
+                )}
                 <FormControl
-                  required
-                  readOnly
-                  name="parent"
-                  disabled={formik.values.isParentTask}
                   required={false}
-                  errors={formik.errors.parent}
+                  readOnly
+                  hidden
+                  name="parentTask"
+                  disabled={formik.values.isParentTask}
+                  errors={formik.errors.parentTask}
                   className={
-                    formik.touched.parent
-                      ? formik.errors.parent
+                    formik.touched.parentTask
+                      ? formik.errors.parentTask
                         ? "is-invalid mb-2 mt-2"
                         : "is-valid mb-2 mt-2"
                       : "mb-2 mt-2"
                   }
-                  {...formik.getFieldProps("parent")}
+                  {...formik.getFieldProps("parentTask")}
                 ></FormControl>
                 <InputGroup.Append>
                   <Button
                     variant="outline-primary"
-                    onClick={() => {
-                      setShowParentModal(true);
-                    }}
+                    onClick={searchParentTask}
+                    disabled={formik.values.isParentTask}
                   >
                     Search Parent Task
                   </Button>
                 </InputGroup.Append>
               </InputGroup>
-
               <FormControl.Feedback type="invalid">
-                {formik.errors.user}
+                {formik.errors.parentTask}
               </FormControl.Feedback>
+
               <FormControl
                 placeholder="Start Date"
                 name="startDate"
@@ -317,6 +368,7 @@ export const AddTask = () => {
               <FormControl.Feedback type="invalid">
                 {formik.errors.startDate}
               </FormControl.Feedback>
+
               <FormControl
                 placeholder="End Date"
                 name="endDate"
@@ -337,8 +389,14 @@ export const AddTask = () => {
                 {formik.errors.endDate}
               </FormControl.Feedback>
               <InputGroup>
+                {formik.values.user && formik.values.user.firstName ? (
+                  <FormLabel className="modal-label">{`${formik.values.user.firstName} ${formik.values.user.lastName}`}</FormLabel>
+                ) : (
+                  <FormLabel className="modal-label"></FormLabel>
+                )}
                 <FormControl
                   required
+                  hidden
                   readOnly
                   name="user"
                   disabled={formik.values.isParentTask}
@@ -356,9 +414,8 @@ export const AddTask = () => {
                 <InputGroup.Append>
                   <Button
                     variant="outline-primary"
-                    onClick={() => {
-                      setShowUserModal(true);
-                    }}
+                    onClick={searchUser}
+                    disabled={formik.values.isParentTask}
                   >
                     Search User
                   </Button>
@@ -368,6 +425,7 @@ export const AddTask = () => {
               <FormControl.Feedback type="invalid">
                 {formik.errors.user}
               </FormControl.Feedback>
+
               <div className="float-right mt-4">
                 <Button
                   variant="primary"
@@ -387,40 +445,47 @@ export const AddTask = () => {
                   Reset
                 </Button>
               </div>
-              <SearchModal
-                id="searchManager"
-                heading="Serach Manager"
-                showModal={showUserModal}
-                onCloseModal={onCloseManagerModal}
-                data={[
-                  { name: "SHREE", id: "1" },
-                  { name: "OM", id: "2" }
-                ]}
-                onSearch={data => {
-                  onSearchManager(data, formik.setFieldValue);
-                }}
-              />
+
               <SearchModal
                 id="searchProject"
                 heading="Serach Project"
                 showModal={showProjectModal}
                 onCloseModal={onCloseProjectModal}
-                data={[
-                  { name: "Project A", id: "1" },
-                  { name: "Project B", id: "2" }
+                data={projectList}
+                columns={[
+                  { dataField: "_id", hidden: true },
+                  { dataField: "projectName", text: "Project List" }
                 ]}
                 onSearch={data => {
                   onSearchProject(data, formik.setFieldValue);
                 }}
               />
+
               <SearchModal
-                id="searchParent"
+                id="searchUser"
+                heading="Serach User"
+                showModal={showUserModal}
+                onCloseModal={onCloseUserModal}
+                data={userList}
+                columns={[
+                  { dataField: "_id", hidden: true },
+                  { dataField: "firstName", text: "User List" },
+                  { dataField: "lastName", hidden: true }
+                ]}
+                onSearch={data => {
+                  onSearchUser(data, formik.setFieldValue);
+                }}
+              />
+
+              <SearchModal
+                id="searchParentTask"
                 heading="Serach Parent Task"
                 showModal={showParentModal}
                 onCloseModal={onCloseParentModal}
-                data={[
-                  { name: "Parent A", id: "1" },
-                  { name: "Parent B", id: "2" }
+                data={parentTaskList}
+                columns={[
+                  { dataField: "_id", hidden: true },
+                  { dataField: "taskName", text: "Parent Task List" } // Todo parentTask
                 ]}
                 onSearch={data => {
                   onSearchParent(data, formik.setFieldValue);

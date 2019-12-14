@@ -25,13 +25,6 @@ connection.once("open", function() {
   console.log("MongoDB database connection established successfully");
 });
 
-// todoRoutes.route('/:id').get(function(req, res) {
-//   let id = req.params.id;
-//   Todo.findById(id, function(err, todo) {
-//     res.json(todo);
-//   });
-// });
-
 //-----------------------------------------------------------------------------
 // User routes
 //1 . Fetch All users
@@ -95,23 +88,11 @@ userRoutes.route("/delete/:id").get(function(req, res) {
 
 app.use("/user", userRoutes);
 
-//--------------------------------------------------------------
-// Project routes
-//1 . Fetch All project
-// projectRoutes.route("/").get(function(req, res) {
-//   Project.find(function(err, resp) {
-//     if (err) {
-//       console.log(err);
-//     } else {
-//       res.json(resp);
-//     }
-//   });
-// });
-
+//-- Project Route----------
 //1 . Fetch All project
 projectRoutes.route("/").get(function(req, res) {
-  Project.find({})
-    .populate("numOfTask")
+  Project.find()
+    .populate("task")
     .exec(function(err, resp) {
       if (err) {
         console.log(err);
@@ -171,9 +152,22 @@ projectRoutes.route("/delete/:id").get(function(req, res) {
         });
   });
 });
+
+//5 Get data for Edit Mode
+projectRoutes.route("/:id").get(function(req, res) {
+  Project.findById(req.params.id)
+    .populate("manager")
+    .exec(function(err, resp) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.json(resp);
+      }
+    });
+});
 app.use("/project", projectRoutes);
 //--------------------------------------------------------------------------
-// ADD TASK ROUTES
+
 // ADD TASK ROUTES
 taskRoutes.route("/add").post(function(req, res) {
   let task = new Task(req.body);

@@ -1,13 +1,13 @@
 import React from "react";
 import { Row, Col, Nav, Navbar } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
-
+import "./AppNav.scss";
 const AppNav = () => {
   return (
     <>
       <Row className="no-gutters">
         <Col>
-          <Navbar bg="light" expand="lg" variant="light">
+          <Navbar className="custom-nav" expand="lg">
             <LinkContainer to="/">
               <Navbar.Brand>Project Manager</Navbar.Brand>
             </LinkContainer>

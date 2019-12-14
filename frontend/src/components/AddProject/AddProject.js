@@ -4,14 +4,12 @@ import {
   Row,
   Col,
   FormControl,
+  InputGroup,
   Button,
   ListGroup,
   Alert,
   Form,
-  Modal,
-  FormGroup,
-  FormLabel,
-  InputGroup
+  FormLabel
 } from "react-bootstrap";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -22,10 +20,12 @@ import SearchModal from "../common/SearchModal";
 import {
   getAllProject,
   addNewProject,
+  getProjectById,
   updateProjectById,
-  deleteProjectById
+  deleteProjectById,
+  getAllUsers
 } from "../../api/Api";
-import * as moment from "moment";
+import moment from "moment";
 
 export const AddProject = () => {
   const initialStartDate = formatDate(new Date());
@@ -35,7 +35,7 @@ export const AddProject = () => {
   let [projects, setProjects] = useState([]);
 
   let [editMode, setEditMode] = useState(false);
-  let [projectId, setProjectId] = useState("");
+  //let [projectId, setProjectId] = useState('');
   let [projectName, setProjectName] = useState("");
 
   let [startDate, setStartDate] = useState(initialStartDate);
@@ -49,7 +49,7 @@ export const AddProject = () => {
     variant: ""
   });
 
-  async function fetchAllProjects() {
+  const fetchAllProjects = async () => {
     try {
       setProjects(await getAllProject());
       setProjectUpdated(false);
@@ -61,9 +61,9 @@ export const AddProject = () => {
         variant: "danger"
       });
     }
-  }
+  };
 
-  async function deleteProject(project) {
+  const deleteProject = async project => {
     try {
       const resp = await deleteProjectById(project);
       setProjectUpdated(true);
@@ -83,32 +83,41 @@ export const AddProject = () => {
     }
     resetFormState();
     formik.resetForm();
-  }
+  };
 
-  function editProject(project) {
-    setEditMode(true);
-    setProjectId(project._id);
-    setProjectName(project.projectName);
-    setDateRequired(project.dateRequired);
-    setStartDate(
-      project.startDate ? formatDate(project.startDate) : initialStartDate
-    );
-    setEndDate(project.endDate ? formatDate(project.endDate) : initialEndDate);
-    setPriority(project.priority);
-    setManager(project.manager);
-  }
+  const getNumOfCompletedTask = task => {
+    const length = task.filter(item => item.status === "Completed").length;
+    return length;
+  };
+
+  const editProject = async project => {
+    try {
+      const resp = await getProjectById(project._id);
+      setEditMode(true);
+      //setProjectId(resp._id);
+      setProjectName(resp.projectName);
+      setDateRequired(resp.dateRequired);
+      setStartDate(
+        resp.startDate ? formatDate(resp.startDate) : initialStartDate
+      );
+      setEndDate(resp.endDate ? formatDate(resp.endDate) : initialEndDate);
+      setPriority(resp.priority);
+      setManager(resp.manager);
+    } catch (err) {}
+  };
 
   //Call this function after setStatusMessag to autoHide alert message
-  function autoHideAlert() {
+
+  const autoHideAlert = () => {
     setTimeout(() => {
       setStatusMessage({
         ...statusMessage,
         show: false
       });
     }, 5000);
-  }
+  };
 
-  function resetFormState() {
+  const resetFormState = () => {
     setProjectName("");
     setStartDate(initialStartDate);
     setEndDate(initialEndDate);
@@ -116,7 +125,7 @@ export const AddProject = () => {
     setManager("");
     setDateRequired(false);
     setEditMode(false);
-  }
+  };
 
   function getAfterDate(num) {
     return moment().add(num, "day");
@@ -127,14 +136,19 @@ export const AddProject = () => {
   }
 
   let [showManagerModal, setShowManagerModal] = useState(false);
+  let [managerList, setManagerList] = useState([]);
   let [manager, setManager] = useState("");
 
-  function onCloseManagerModal(val) {
+  const onCloseManagerModal = val => {
     setShowManagerModal(false);
-  }
-  function onSearchManager(data, setFieldValue) {
-    setFieldValue("manager", data.name);
-  }
+  };
+  const searchManager = async () => {
+    setManagerList(await getAllUsers());
+    setShowManagerModal(true);
+  };
+  const onSearchManager = (data, setFieldValue) => {
+    setFieldValue("manager", data);
+  };
 
   useEffect(() => {
     fetchAllProjects();
@@ -143,7 +157,7 @@ export const AddProject = () => {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      projectId: projectId,
+      //projectId: projectId,
       projectName: projectName,
       startDate: startDate,
       endDate: endDate,
@@ -171,11 +185,9 @@ export const AddProject = () => {
           ),
         otherwise: Yup.date()
       }),
-      priority: Yup.number().required(
-        "Please select proper range between 0 to 30 for Priority"
-      ),
+      priority: Yup.number().required("Please enter Priority"),
       dateRequired: Yup.boolean(),
-      manager: Yup.string().required("Please select Manager from serach")
+      manager: Yup.object().required("Please select Manager from serach")
     }),
     onSubmit: async value => {
       if (!value.dateRequired) {
@@ -222,23 +234,30 @@ export const AddProject = () => {
               {statusMessage.message}
             </Alert>
             <form onSubmit={formik.handleSubmit}>
-              <FormControl
-                required
-                placeholder="ProjectName"
-                name="projectName"
-                errors={formik.errors.projectName}
-                className={
-                  formik.touched.projectName
-                    ? formik.errors.projectName
-                      ? "is-invalid mb-2 mt-2"
-                      : "is-valid mb-2 mt-2"
-                    : "mb-2 mt-2"
-                }
-                {...formik.getFieldProps("projectName")}
-              ></FormControl>
-              <FormControl.Feedback type="invalid">
-                {formik.errors.projectName}
-              </FormControl.Feedback>
+              <Form.Group as={Row}>
+                <Form.Label column sm="2">
+                  Project Name:
+                </Form.Label>
+                <Col sm="10">
+                  <FormControl
+                    required
+                    placeholder="ProjectName"
+                    name="projectName"
+                    errors={formik.errors.projectName}
+                    className={
+                      formik.touched.projectName
+                        ? formik.errors.projectName
+                          ? "is-invalid mb-2 mt-2"
+                          : "is-valid mb-2 mt-2"
+                        : "mb-2 mt-2"
+                    }
+                    {...formik.getFieldProps("projectName")}
+                  ></FormControl>
+                  <FormControl.Feedback type="invalid">
+                    {formik.errors.projectName}
+                  </FormControl.Feedback>
+                </Col>
+              </Form.Group>
 
               <Form.Check
                 type="checkbox"
@@ -286,10 +305,21 @@ export const AddProject = () => {
               <FormControl.Feedback type="invalid">
                 {formik.errors.endDate}
               </FormControl.Feedback>
-              <FormLabel>Priority</FormLabel>
-              <FormControl.Feedback type="touched">
-                {formik.errors.priority}
-              </FormControl.Feedback>
+              {/* <FormControl
+              placeholder="priority"
+              name="priority"
+              required
+              errors={formik.errors.priority}
+              className={
+                formik.touched.priority
+                  ? formik.errors.priority
+                    ? 'is-invalid mb-2 mt-2'
+                    : 'is-valid mb-2 mt-2'
+                  : 'mb-2 mt-2'
+              }
+              {...formik.getFieldProps('priority')}
+            ></FormControl> */}
+
               <FormControl
                 placeholder="priority"
                 name="priority"
@@ -307,10 +337,21 @@ export const AddProject = () => {
                 }
                 {...formik.getFieldProps("priority")}
               ></FormControl>
+
+              <FormControl.Feedback type="invalid">
+                {formik.errors.priority}
+              </FormControl.Feedback>
               <InputGroup>
+                {formik.values.manager.firstName ? (
+                  <FormLabel className="modal-label">{`${formik.values.manager.firstName} ${formik.values.manager.lastName}`}</FormLabel>
+                ) : (
+                  <FormLabel className="modal-label"></FormLabel>
+                )}
                 <FormControl
+                  plaintext
                   required
                   readOnly
+                  hidden
                   name="manager"
                   errors={formik.errors.manager}
                   className={
@@ -323,20 +364,13 @@ export const AddProject = () => {
                   {...formik.getFieldProps("manager")}
                 ></FormControl>
                 <InputGroup.Append>
-                  <Button
-                    variant="outline-primary"
-                    onClick={() => {
-                      setShowManagerModal(true);
-                    }}
-                  >
-                    Search Manager
-                  </Button>
+                  <Button onClick={searchManager}>Search Manager</Button>
                 </InputGroup.Append>
               </InputGroup>
-
               <FormControl.Feedback type="invalid">
                 {formik.errors.manager}
               </FormControl.Feedback>
+
               <div className="float-right mt-4">
                 <Button
                   variant="primary"
@@ -361,9 +395,11 @@ export const AddProject = () => {
                 heading="Serach Manager"
                 showModal={showManagerModal}
                 onCloseModal={onCloseManagerModal}
-                data={[
-                  { name: "SHREE", id: "1" },
-                  { name: "OM", id: "2" }
+                data={managerList}
+                columns={[
+                  { dataField: "_id", hidden: true },
+                  { dataField: "firstName", text: "User List" },
+                  { dataField: "lastName", hidden: true }
                 ]}
                 onSearch={data => {
                   onSearchManager(data, formik.setFieldValue);
@@ -398,10 +434,14 @@ export const AddProject = () => {
                       </div>
                       <div>
                         <span className="mr-2">
-                          No of tasks: {project.numOfTask}
+                          No of tasks: {project.task.length}
                         </span>
                       </div>
-                      {/* <p>Manager : {project.manager}</p> */}
+                      <div>
+                        <span className="mr-2">
+                          Completed: {getNumOfCompletedTask(project.task)}
+                        </span>
+                      </div>
                     </div>
                     <ListGroup>
                       <ListGroup.Item>

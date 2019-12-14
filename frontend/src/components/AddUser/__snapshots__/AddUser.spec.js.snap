@@ -1,0 +1,114 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Add User Component Should render Add User component 1`] = `
+<div>
+  <div
+    class="container"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="mt-5 col"
+      >
+        <form>
+          <input
+            class="mb-2 mt-2 form-control"
+            name="firstName"
+            placeholder="FirstName"
+            required=""
+            value=""
+          />
+          <div
+            class="invalid-feedback"
+          />
+          <input
+            class="mb-2 mt-2 form-control"
+            name="lastName"
+            placeholder="LastName"
+            required=""
+            value=""
+          />
+          <div
+            class="invalid-feedback"
+          />
+          <input
+            class="mb-2 mt-2 form-control"
+            name="empId"
+            placeholder="Employee ID"
+            required=""
+            value=""
+          />
+          <div
+            class="invalid-feedback"
+          />
+          <div
+            class="float-right"
+          >
+            <button
+              class="ml-2 mr-2 btn btn-primary"
+              disabled=""
+              type="submit"
+            >
+              Add
+            </button>
+            <button
+              class="btn btn-outline-secondary"
+              type="button"
+            >
+              Reset
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <hr />
+    <div
+      class="row"
+    >
+      <div
+        class="col-sm-6 col-12"
+      >
+        <input
+          class="mb-4 form-control"
+          placeholder="Search"
+        />
+      </div>
+      <div
+        class="col-sm-6 col-12"
+      >
+        Sort By:
+        <button
+          class="ml-2 btn btn-outline-primary"
+          type="button"
+        >
+          First Name
+        </button>
+        <button
+          class="ml-2 btn btn-outline-primary"
+          type="button"
+        >
+          Last Name
+        </button>
+        <button
+          class="ml-2 btn btn-outline-primary"
+          type="button"
+        >
+          ID
+        </button>
+      </div>
+    </div>
+    <div
+      class="mt-4 row"
+    >
+      <div
+        class="col"
+      >
+        <div
+          class="list-group"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;

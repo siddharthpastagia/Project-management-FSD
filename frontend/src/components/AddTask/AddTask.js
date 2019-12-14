@@ -7,7 +7,6 @@ import {
   Button,
   Alert,
   Form,
-  Modal,
   FormLabel,
   InputGroup
 } from "react-bootstrap";
@@ -23,7 +22,7 @@ import {
   updateParentTaskById,
   updateTaskById
 } from "../../api/Api";
-import * as moment from "moment";
+import moment from "moment";
 import "./AddTask.scss";
 
 export const AddTask = props => {
@@ -125,33 +124,35 @@ export const AddTask = props => {
     enableReinitialize: true,
     initialValues: {
       project:
-        editTaskObj && props.history.action == "PUSH"
+        editTaskObj && props.history.action === "PUSH"
           ? editTaskObj.project
           : project,
       parentTask:
-        editTaskObj && props.history.action == "PUSH"
+        editTaskObj && props.history.action === "PUSH"
           ? editTaskObj.parentTask
           : parentTask,
       user:
-        editTaskObj && props.history.action == "PUSH" ? editTaskObj.user : user,
+        editTaskObj && props.history.action === "PUSH"
+          ? editTaskObj.user
+          : user,
       taskName:
-        editTaskObj && props.history.action == "PUSH"
+        editTaskObj && props.history.action === "PUSH"
           ? editTaskObj.taskName
           : taskName,
       startDate:
-        editTaskObj && props.history.action == "PUSH"
+        editTaskObj && props.history.action === "PUSH"
           ? formatDate(editTaskObj.startDate)
           : startDate,
       endDate:
-        editTaskObj && props.history.action == "PUSH"
+        editTaskObj && props.history.action === "PUSH"
           ? formatDate(editTaskObj.endDate)
           : endDate,
       priority:
-        editTaskObj && props.history.action == "PUSH"
+        editTaskObj && props.history.action === "PUSH"
           ? editTaskObj.priority
           : priority,
       isParentTask:
-        editTaskObj && props.history.action == "PUSH"
+        editTaskObj && props.history.action === "PUSH"
           ? editTaskObj.isParentTask
           : isParentTask
     },
@@ -204,7 +205,7 @@ export const AddTask = props => {
         delete value.parentTask;
         try {
           const resp =
-            editTaskObj && props.history.action == "PUSH"
+            editTaskObj && props.history.action === "PUSH"
               ? await updateParentTaskById({
                   ...value,
                   parentTaskId: editTaskObj.parentTaskObj._id
@@ -228,7 +229,7 @@ export const AddTask = props => {
 
       try {
         const resp =
-          editTaskObj && props.history.action == "PUSH"
+          editTaskObj && props.history.action === "PUSH"
             ? await updateTaskById({ ...value, _id: editTaskObj._id })
             : await addNewTask(value);
         setStatusMessage({
@@ -269,7 +270,7 @@ export const AddTask = props => {
               <InputGroup>
                 {formik.values.project.projectName ? (
                   <FormLabel className="modal-label">{`${formik.values.project.projectName}`}</FormLabel>
-                ) : editTaskObj && props.history.action == "PUSH" ? (
+                ) : editTaskObj && props.history.action === "PUSH" ? (
                   <FormLabel className="modal-label"></FormLabel>
                 ) : (
                   <FormLabel className="modal-label"></FormLabel>
@@ -294,7 +295,7 @@ export const AddTask = props => {
                   <Button
                     variant="outline-primary"
                     onClick={searchProject}
-                    disabled={editTaskObj && props.history.action == "PUSH"}
+                    disabled={editTaskObj && props.history.action === "PUSH"}
                   >
                     Search Project
                   </Button>
@@ -475,7 +476,7 @@ export const AddTask = props => {
                   type="submit"
                   className="ml-2 mr-2"
                 >
-                  {editTaskObj && props.history.action == "PUSH"
+                  {editTaskObj && props.history.action === "PUSH"
                     ? "Update"
                     : "Add"}
                 </Button>

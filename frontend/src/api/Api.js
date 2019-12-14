@@ -48,7 +48,12 @@ export const addNewProject = async project => {
     .then(resp => resp.data)
     .catch(err => Promise.reject(err));
 };
-
+export const getProjectById = async projectId => {
+  return axios
+    .get(`${apiPath}/project/${projectId}`, { headers: headers })
+    .then(resp => resp.data)
+    .catch(err => Promise.reject(err));
+};
 export const updateProjectById = async project => {
   return axios
     .put(`${apiPath}/project/update/${project.projectId}`, project, {

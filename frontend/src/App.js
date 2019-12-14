@@ -12,13 +12,15 @@ function App() {
     <>
       <Router>
         <AppNav />
-        <Switch>
-          <Route exact path="/" component={Dashboard} />
-          <Route exact path="/add-project" component={AddProject} />
-          <Route exact path="/add-task" component={AddTask} />
-          <Route exact path="/add-user" component={AddUser} />
-          <Route exact path="/view-task" component={ViewTask} />
-        </Switch>
+        <div className="main-container">
+          <Switch>
+            <Route exact path="/" component={Dashboard} />
+            <Route exact path="/add-project" component={AddProject} />
+            <Route exact path="/add-task" component={AddTask} />
+            <Route exact path="/add-user" component={AddUser} />
+            <Route exact path="/view-task" component={ViewTask} />
+          </Switch>
+        </div>
       </Router>
     </>
   );

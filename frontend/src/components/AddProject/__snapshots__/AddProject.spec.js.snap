@@ -1,0 +1,157 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Add Project Component Should render AddProject component 1`] = `
+<div>
+  <div
+    class="container"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="mt-3 col"
+      >
+        <form>
+          <div
+            class="form-group row"
+          >
+            <label
+              class="form-label col-form-label col-sm-2"
+            >
+              Project Name:
+            </label>
+            <div
+              class="col-sm-10"
+            >
+              <input
+                class="mb-2 mt-2 form-control"
+                name="projectName"
+                placeholder="ProjectName"
+                required=""
+                value=""
+              />
+              <div
+                class="invalid-feedback"
+              />
+            </div>
+          </div>
+          <div
+            class="form-check"
+          >
+            <input
+              class="form-check-input"
+              name="dateRequired"
+              type="checkbox"
+              value="false"
+            />
+            <label
+              class="form-check-label"
+              title=""
+            >
+              Set Start and End date
+            </label>
+          </div>
+          <input
+            class="mb-2 mt-2 form-control"
+            disabled=""
+            name="startDate"
+            placeholder="Start Date"
+            type="date"
+            value="2019-12-14"
+          />
+          <div
+            class="invalid-feedback"
+          />
+          <input
+            class="mb-2 mt-2 form-control"
+            disabled=""
+            name="endDate"
+            placeholder="End Date"
+            type="date"
+            value="2019-12-15"
+          />
+          <div
+            class="invalid-feedback"
+          />
+          <input
+            class="mb-2 mt-2 form-control"
+            max="30"
+            min="0"
+            name="priority"
+            placeholder="priority"
+            step="1"
+            type="range"
+            value=""
+          />
+          <div
+            class="invalid-feedback"
+          />
+          <div
+            class="input-group"
+          >
+            <label
+              class="modal-label form-label"
+            />
+            <input
+              class="mb-2 mt-2 form-control-plaintext"
+              hidden=""
+              name="manager"
+              readonly=""
+              required=""
+              value=""
+            />
+            <div
+              class="input-group-append"
+            >
+              <button
+                class="btn btn-primary"
+                type="button"
+              >
+                Search Manager
+              </button>
+            </div>
+          </div>
+          <div
+            class="invalid-feedback"
+          />
+          <div
+            class="float-right mt-4"
+          >
+            <button
+              class="ml-2 mr-2 btn btn-primary"
+              disabled=""
+              type="submit"
+            >
+              Add
+            </button>
+            <button
+              class="btn btn-outline-secondary"
+              type="button"
+            >
+              Reset
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <hr />
+    <div
+      class="row"
+    >
+      <div
+        class="col"
+      >
+        <div
+          class="fade alert alert-warning show"
+          role="alert"
+        >
+          Projects are not available in database!!
+        </div>
+        <div
+          class="list-group"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;

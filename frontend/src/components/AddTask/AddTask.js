@@ -255,6 +255,11 @@ export const AddTask = props => {
     <>
       <Container>
         <Row>
+          <Col>
+            <h3 className="mt-3">Task Management</h3>
+          </Col>
+        </Row>
+        <Row>
           <Col className="mt-3">
             <Alert
               variant={statusMessage.variant}
@@ -267,6 +272,7 @@ export const AddTask = props => {
               {statusMessage.message}
             </Alert>
             <form onSubmit={formik.handleSubmit}>
+              <FormLabel>Search Project</FormLabel>
               <InputGroup>
                 {formik.values.project.projectName ? (
                   <FormLabel className="modal-label">{`${formik.values.project.projectName}`}</FormLabel>
@@ -297,14 +303,14 @@ export const AddTask = props => {
                     onClick={searchProject}
                     disabled={editTaskObj && props.history.action === "PUSH"}
                   >
-                    Search Project
+                    <i className="fa fa-search"></i>
                   </Button>
                 </InputGroup.Append>
               </InputGroup>
               <FormControl.Feedback type="invalid">
                 {formik.errors.project}
               </FormControl.Feedback>
-
+              <FormLabel className="mt-2">Task Name</FormLabel>
               <FormControl
                 required
                 placeholder="Task name"
@@ -322,16 +328,17 @@ export const AddTask = props => {
               <FormControl.Feedback type="invalid">
                 {formik.errors.taskName}
               </FormControl.Feedback>
-
-              <Form.Check
-                type="checkbox"
-                name="isParentTask"
-                value={formik.values.isParentTask}
-                checked={formik.values.isParentTask}
-                label="Parent Task"
-                {...formik.getFieldProps("isParentTask")}
-              />
-              <FormLabel>Priority</FormLabel>
+              <b>
+                <Form.Check
+                  type="checkbox"
+                  name="isParentTask"
+                  value={formik.values.isParentTask}
+                  checked={formik.values.isParentTask}
+                  label="Parent Task"
+                  {...formik.getFieldProps("isParentTask")}
+                />
+              </b>
+              <FormLabel className="mt-2">Priority</FormLabel>
               <FormControl.Feedback type="touched">
                 {formik.errors.isParentTask}
               </FormControl.Feedback>
@@ -354,7 +361,7 @@ export const AddTask = props => {
                 }
                 {...formik.getFieldProps("priority")}
               ></FormControl>
-
+              <FormLabel className="mt-2">Search Parent Task</FormLabel>
               <InputGroup>
                 {formik.values.parentTask &&
                 formik.values.parentTask.taskName ? (
@@ -384,14 +391,14 @@ export const AddTask = props => {
                     onClick={searchParentTask}
                     disabled={formik.values.isParentTask}
                   >
-                    Search Parent Task
+                    <i className="fa fa-search"></i>
                   </Button>
                 </InputGroup.Append>
               </InputGroup>
               <FormControl.Feedback type="invalid">
                 {formik.errors.parentTask}
               </FormControl.Feedback>
-
+              <FormLabel className="mt-2">Start Date</FormLabel>
               <FormControl
                 placeholder="Start Date"
                 name="startDate"
@@ -411,7 +418,7 @@ export const AddTask = props => {
               <FormControl.Feedback type="invalid">
                 {formik.errors.startDate}
               </FormControl.Feedback>
-
+              <FormLabel className="mt-2">End Date</FormLabel>
               <FormControl
                 placeholder="End Date"
                 name="endDate"
@@ -431,6 +438,7 @@ export const AddTask = props => {
               <FormControl.Feedback type="invalid">
                 {formik.errors.endDate}
               </FormControl.Feedback>
+              <FormLabel className="mt-2">Search User</FormLabel>
               <InputGroup>
                 {formik.values.user && formik.values.user.firstName ? (
                   <FormLabel className="modal-label">{`${formik.values.user.firstName} ${formik.values.user.lastName}`}</FormLabel>
@@ -460,7 +468,7 @@ export const AddTask = props => {
                     onClick={searchUser}
                     disabled={formik.values.isParentTask}
                   >
-                    Search User
+                    <i className="fa fa-search"></i>
                   </Button>
                 </InputGroup.Append>
               </InputGroup>
@@ -469,7 +477,7 @@ export const AddTask = props => {
                 {formik.errors.user}
               </FormControl.Feedback>
 
-              <div className="float-right mt-4">
+              <div className="mt-5 mb-5 text-center">
                 <Button
                   variant="primary"
                   disabled={!formik.isValid || !formik.dirty}

@@ -91,6 +91,11 @@ const ViewTask = () => {
   return (
     <>
       <Container>
+        <Row>
+          <Col>
+            <h3 className="mt-3">View Tasks</h3>
+          </Col>
+        </Row>
         {taskCompleted && (
           <Alert variant="info" className="mt-3">
             Selected task has been Completed.
@@ -98,6 +103,7 @@ const ViewTask = () => {
         )}
         <Row>
           <Col className="mt-3">
+            <FormLabel>Search Project</FormLabel>
             <InputGroup>
               <FormControl
                 required
@@ -107,7 +113,7 @@ const ViewTask = () => {
               ></FormControl>
               <InputGroup.Append>
                 <Button variant="outline-primary" onClick={searchProject}>
-                  Search project
+                  <i className="fa fa-search"></i>
                 </Button>
               </InputGroup.Append>
             </InputGroup>

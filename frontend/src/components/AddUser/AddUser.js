@@ -161,7 +161,12 @@ export const AddUser = () => {
     <>
       <Container>
         <Row>
-          <Col className="mt-5">
+          <Col>
+            <h3 className="mt-3">User Management</h3>
+          </Col>
+        </Row>
+        <Row>
+          <Col className="mt-2">
             <Alert
               variant={statusMessage.variant}
               show={statusMessage.show}
@@ -224,7 +229,7 @@ export const AddUser = () => {
               <FormControl.Feedback type="invalid">
                 {formik.errors.empId}
               </FormControl.Feedback>
-              <div className="float-right">
+              <div className="text-center mt-4 mb-2">
                 <Button
                   variant="primary"
                   disabled={!formik.isValid || !formik.dirty}

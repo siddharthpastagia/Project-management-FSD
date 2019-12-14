@@ -35,7 +35,7 @@ export const AddProject = () => {
   let [projects, setProjects] = useState([]);
 
   let [editMode, setEditMode] = useState(false);
-  //let [projectId, setProjectId] = useState('');
+  let [projectId, setProjectId] = useState("");
   let [projectName, setProjectName] = useState("");
 
   let [startDate, setStartDate] = useState(initialStartDate);
@@ -94,7 +94,7 @@ export const AddProject = () => {
     try {
       const resp = await getProjectById(project._id);
       setEditMode(true);
-      //setProjectId(resp._id);
+      setProjectId(resp._id);
       setProjectName(resp.projectName);
       setDateRequired(resp.dateRequired);
       setStartDate(
@@ -157,7 +157,7 @@ export const AddProject = () => {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      //projectId: projectId,
+      projectId: projectId,
       projectName: projectName,
       startDate: startDate,
       endDate: endDate,
@@ -222,6 +222,11 @@ export const AddProject = () => {
     <>
       <Container>
         <Row>
+          <Col>
+            <h3 className="mt-3">Project Management</h3>
+          </Col>
+        </Row>
+        <Row>
           <Col className="mt-3">
             <Alert
               variant={statusMessage.variant}
@@ -234,29 +239,26 @@ export const AddProject = () => {
               {statusMessage.message}
             </Alert>
             <form onSubmit={formik.handleSubmit}>
-              <Form.Group as={Row}>
-                <Form.Label column sm="2">
-                  Project Name:
-                </Form.Label>
-                <Col sm="10">
-                  <FormControl
-                    required
-                    placeholder="ProjectName"
-                    name="projectName"
-                    errors={formik.errors.projectName}
-                    className={
-                      formik.touched.projectName
-                        ? formik.errors.projectName
-                          ? "is-invalid mb-2 mt-2"
-                          : "is-valid mb-2 mt-2"
-                        : "mb-2 mt-2"
-                    }
-                    {...formik.getFieldProps("projectName")}
-                  ></FormControl>
-                  <FormControl.Feedback type="invalid">
-                    {formik.errors.projectName}
-                  </FormControl.Feedback>
-                </Col>
+              <Form.Group>
+                <Form.Label>Project Name</Form.Label>
+
+                <FormControl
+                  required
+                  placeholder="Project Name"
+                  name="projectName"
+                  errors={formik.errors.projectName}
+                  className={
+                    formik.touched.projectName
+                      ? formik.errors.projectName
+                        ? "is-invalid mb-2 mt-2"
+                        : "is-valid mb-2 mt-2"
+                      : "mb-2 mt-2"
+                  }
+                  {...formik.getFieldProps("projectName")}
+                ></FormControl>
+                <FormControl.Feedback type="invalid">
+                  {formik.errors.projectName}
+                </FormControl.Feedback>
               </Form.Group>
 
               <Form.Check
@@ -267,6 +269,7 @@ export const AddProject = () => {
                 label="Set Start and End date"
                 {...formik.getFieldProps("dateRequired")}
               />
+              <Form.Label className="mt-2">Start Date</Form.Label>
               <FormControl
                 placeholder="Start Date"
                 name="startDate"
@@ -286,6 +289,7 @@ export const AddProject = () => {
               <FormControl.Feedback type="invalid">
                 {formik.errors.startDate}
               </FormControl.Feedback>
+              <Form.Label>End Date</Form.Label>
               <FormControl
                 placeholder="End Date"
                 name="endDate"
@@ -305,21 +309,7 @@ export const AddProject = () => {
               <FormControl.Feedback type="invalid">
                 {formik.errors.endDate}
               </FormControl.Feedback>
-              {/* <FormControl
-              placeholder="priority"
-              name="priority"
-              required
-              errors={formik.errors.priority}
-              className={
-                formik.touched.priority
-                  ? formik.errors.priority
-                    ? 'is-invalid mb-2 mt-2'
-                    : 'is-valid mb-2 mt-2'
-                  : 'mb-2 mt-2'
-              }
-              {...formik.getFieldProps('priority')}
-            ></FormControl> */}
-
+              <Form.Label>Priority</Form.Label>
               <FormControl
                 placeholder="priority"
                 name="priority"
@@ -341,6 +331,7 @@ export const AddProject = () => {
               <FormControl.Feedback type="invalid">
                 {formik.errors.priority}
               </FormControl.Feedback>
+              <Form.Label>Serach Manager</Form.Label>
               <InputGroup>
                 {formik.values.manager.firstName ? (
                   <FormLabel className="modal-label">{`${formik.values.manager.firstName} ${formik.values.manager.lastName}`}</FormLabel>
@@ -364,14 +355,16 @@ export const AddProject = () => {
                   {...formik.getFieldProps("manager")}
                 ></FormControl>
                 <InputGroup.Append>
-                  <Button onClick={searchManager}>Search Manager</Button>
+                  <Button onClick={searchManager}>
+                    <i className="fa fa-search"></i>
+                  </Button>
                 </InputGroup.Append>
               </InputGroup>
               <FormControl.Feedback type="invalid">
                 {formik.errors.manager}
               </FormControl.Feedback>
 
-              <div className="float-right mt-4">
+              <div className="text-center mt-4 mb-4">
                 <Button
                   variant="primary"
                   disabled={!formik.isValid || !formik.dirty}

@@ -9,7 +9,9 @@ const AppNav = () => {
         <Col>
           <Navbar className="custom-nav" expand="lg">
             <LinkContainer to="/">
-              <Navbar.Brand>Project Manager</Navbar.Brand>
+              <Navbar.Brand>
+                <i className="fa fa-tasks"></i> Project Manager
+              </Navbar.Brand>
             </LinkContainer>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">

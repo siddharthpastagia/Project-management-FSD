@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 import AppNav from "./components/AppNav/AppNav";
+import "font-awesome/css/font-awesome.min.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Dashboard } from "./components/Dashboard/Dashboard";
 import { AddProject } from "./components/AddProject/AddProject";

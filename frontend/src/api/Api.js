@@ -87,6 +87,13 @@ export const getAllTasksByProjectId = async project => {
     .catch(err => Promise.reject(err));
 };
 
+export const getTaskById = async taskId => {
+  return axios
+    .get(`${apiPath}/task/${taskId}`, { headers: headers })
+    .then(resp => resp.data)
+    .catch(err => Promise.reject(err));
+};
+
 // get all tasks
 
 export const getAllTasks = async () => {
@@ -100,6 +107,17 @@ export const getAllTasks = async () => {
 export const updateTaskAsComplete = async task => {
   return axios
     .put(`${apiPath}/task/complete/${task._id}`, task, {
+      headers: headers
+    })
+    .then(resp => resp.data)
+    .catch(err => Promise.reject(err));
+};
+
+// update task by id
+
+export const updateTaskById = async task => {
+  return axios
+    .put(`${apiPath}/task/update/${task._id}`, task, {
       headers: headers
     })
     .then(resp => resp.data)
@@ -122,6 +140,21 @@ export const addParentTask = async task => {
 export const getAllParentTasks = async () => {
   return axios
     .get(`${apiPath}/parentTask`, { headers: headers })
+    .then(resp => resp.data)
+    .catch(err => Promise.reject(err));
+};
+
+// update parent task by id
+
+export const updateParentTaskById = async parentTask => {
+  return axios
+    .put(
+      `${apiPath}/parentTask/update/${parentTask.parentTaskId}`,
+      parentTask,
+      {
+        headers: headers
+      }
+    )
     .then(resp => resp.data)
     .catch(err => Promise.reject(err));
 };

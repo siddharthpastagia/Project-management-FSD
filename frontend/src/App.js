@@ -6,7 +6,7 @@ import { Dashboard } from "./components/Dashboard/Dashboard";
 import { AddProject } from "./components/AddProject/AddProject";
 import { AddTask } from "./components/AddTask/AddTask";
 import { AddUser } from "./components/AddUser/AddUser";
-import { ViewTask } from "./components/ViewTask/ViewTask";
+import ViewTask from "./components/ViewTask/ViewTask";
 function App() {
   return (
     <>

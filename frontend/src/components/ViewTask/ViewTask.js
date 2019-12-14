@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { withRouter, useHistory } from "react-router-dom";
 import {
   Container,
   Row,
@@ -17,10 +18,11 @@ import SearchModal from "../common/SearchModal";
 import {
   getAllTasksByProjectId,
   updateTaskAsComplete,
-  getAllProject
+  getAllProject,
+  getTaskById
 } from "../../api/Api";
 
-export const ViewTask = () => {
+const ViewTask = () => {
   let [tasks, setTasks] = useState([]);
   let [statusMessage, setStatusMessage] = useState({
     show: false,
@@ -30,7 +32,7 @@ export const ViewTask = () => {
 
   //////////////////////////////////////////
   //Serach Project
-
+  let history = useHistory();
   let [project, setProject] = useState("");
   let [projectList, setProjectList] = useState([]);
   let [showProjectModal, setShowProjectModal] = useState(false);
@@ -69,6 +71,13 @@ export const ViewTask = () => {
   function formatDate(date) {
     return moment(date).format("YYYY-MM-DD");
   }
+
+  // edit project
+
+  const editTask = async task => {
+    const currentTask = await getTaskById(task._id);
+    history.push("add-task", currentTask);
+  };
   // sorting
 
   const handleSort = field => {
@@ -176,12 +185,17 @@ export const ViewTask = () => {
                     return (
                       <tr>
                         <td>{task.taskName}</td>
-                        <td></td>
+                        <td>{task.parentTask && task.parentTask.taskName}</td>
                         <td>{task.priority}</td>
                         <td>{formatDate(task.startDate)}</td>
                         <td>{formatDate(task.endDate)}</td>
                         <td>
-                          <Button variant="outline-primary">Edit</Button>
+                          <Button
+                            variant="outline-primary"
+                            onClick={() => editTask(task)}
+                          >
+                            Edit
+                          </Button>
                           <Button
                             variant="outline-primary"
                             className="ml-2"
@@ -213,3 +227,5 @@ export const ViewTask = () => {
     </>
   );
 };
+
+export default withRouter(ViewTask);

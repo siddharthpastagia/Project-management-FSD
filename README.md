@@ -1,6 +1,6 @@
 ## PROJECT MANAGEMENT APPLICATION
 
-IT is single page application to do project management. It is developed using ReactJS, ExpressJS, MongoDB and NODEJS.
+It is single page application to do project management. It is developed using ReactJS, ExpressJS, MongoDB and NODEJS.
 
 ## GIT REPO FOR PROJECT MANAGEMENT (SOURCE CONTROL MANAGEMENT)
 

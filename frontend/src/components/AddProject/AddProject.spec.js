@@ -9,10 +9,8 @@ import axios from "axios";
 jest.mock("axios");
 
 describe("Add Project Component", () => {
-  const onSubmit = jest.fn();
   const fakeProjectName = "ProjectA";
   const fakePriority = 11;
-  const fakeManager = "";
 
   let projectList = {
     data: [
@@ -102,7 +100,7 @@ describe("Add Project Component", () => {
   });
 
   it("Should able to Search Manager", async () => {
-    const { container, getByText, getByTestId } = render(
+    const { getByTestId } = render(
       <Router>
         <AddProject />
       </Router>
@@ -167,7 +165,7 @@ describe("Add Project Component", () => {
   });
 
   it("Should able to Serach the project from project List ", async () => {
-    const { container, getByText, getByPlaceholderText } = render(
+    const { getByText, getByPlaceholderText } = render(
       <Router>
         <AddProject />
       </Router>

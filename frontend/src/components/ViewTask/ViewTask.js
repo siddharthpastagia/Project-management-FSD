@@ -16,7 +16,7 @@ import SearchModal from "../common/SearchModal";
 import {
   getAllTasksByProjectId,
   updateTaskAsComplete,
-  getAllProject,
+  getAllProjects,
   getTaskById
 } from "../../api/Api";
 
@@ -40,7 +40,7 @@ const ViewTask = () => {
   let [prioritySort, setPrioritySort] = useState(false);
   let [taskCompleted, setTaskCompleted] = useState(false);
   const searchProject = async () => {
-    setProjectList(await getAllProject());
+    setProjectList(await getAllProjects());
     setShowProjectModal(true);
   };
   function onCloseProjectModal(val) {

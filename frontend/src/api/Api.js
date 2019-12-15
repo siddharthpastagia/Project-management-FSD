@@ -36,7 +36,7 @@ export const deleteUserById = async user => {
 };
 //-------------------------------------------------------------------------
 //Project
-export const getAllProject = async () => {
+export const getAllProjects = async () => {
   return axios
     .get(`${apiPath}/project`, { headers: headers })
     .then(resp => resp.data)

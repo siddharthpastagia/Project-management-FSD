@@ -25,8 +25,10 @@ connection.once("open", function() {
   console.log("MongoDB database connection established successfully");
 });
 
-//-----------------------------------------------------------------------------
-// User routes
+//ROUTES START FROM HERE
+
+// USER SCREEN ROUTES
+
 //1 . Fetch All users
 userRoutes.route("/").get(function(req, res) {
   User.find(function(err, resp) {
@@ -88,7 +90,8 @@ userRoutes.route("/delete/:id").get(function(req, res) {
 
 app.use("/user", userRoutes);
 
-//-- Project Route----------
+// PROJECT ROUTE START HERE
+
 //1 . Fetch All project
 projectRoutes.route("/").get(function(req, res) {
   Project.find()
@@ -153,7 +156,7 @@ projectRoutes.route("/delete/:id").get(function(req, res) {
   });
 });
 
-//5 Get data for Edit Mode
+//5 find Project by projectID
 projectRoutes.route("/:id").get(function(req, res) {
   Project.findById(req.params.id)
     .populate("manager")
@@ -166,7 +169,8 @@ projectRoutes.route("/:id").get(function(req, res) {
     });
 });
 app.use("/project", projectRoutes);
-//--------------------------------------------------------------------------
+
+// TASK ROUTE START HERE
 
 // ADD TASK ROUTES
 taskRoutes.route("/add").post(function(req, res) {

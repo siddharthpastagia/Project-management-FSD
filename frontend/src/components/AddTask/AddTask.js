@@ -16,7 +16,7 @@ import SearchModal from "../common/SearchModal";
 import {
   addNewTask,
   getAllUsers,
-  getAllProject,
+  getAllProjects,
   getAllParentTasks,
   addParentTask,
   updateParentTaskById,
@@ -26,34 +26,28 @@ import moment from "moment";
 import "./AddTask.scss";
 
 export const AddTask = props => {
+  let [taskName, setTaskName] = useState("");
+  let [isParentTask, setIsParentTask] = useState(false);
+  let [user, setUser] = useState("");
+  let [userList, setUserList] = useState([]);
+  let [showUserModal, setShowUserModal] = useState(false);
+  let [project, setProject] = useState("");
+  let [projectList, setProjectList] = useState([]);
+  let [showProjectModal, setShowProjectModal] = useState(false);
+  let [parentTask, setParentTask] = useState({});
+  let [parentTaskList, setParentTaskList] = useState([]);
+  let [showParentModal, setShowParentModal] = useState(false);
   const editTaskObj = props.history.location.state;
-
   const initialStartDate = formatDate(new Date());
   const initialEndDate = formatDate(getAfterDate(1));
-
-  let [taskName, setTaskName] = useState("");
   let [startDate, setStartDate] = useState(initialStartDate);
   let [endDate, setEndDate] = useState(initialEndDate);
-  let [isParentTask, setIsParentTask] = useState(false);
-
   let [priority, setPriority] = useState("");
   let [statusMessage, setStatusMessage] = useState({
     show: false,
     message: "",
     variant: ""
   });
-
-  let [user, setUser] = useState("");
-  let [userList, setUserList] = useState([]);
-  let [showUserModal, setShowUserModal] = useState(false);
-
-  let [project, setProject] = useState("");
-  let [projectList, setProjectList] = useState([]);
-  let [showProjectModal, setShowProjectModal] = useState(false);
-
-  let [parentTask, setParentTask] = useState({});
-  let [parentTaskList, setParentTaskList] = useState([]);
-  let [showParentModal, setShowParentModal] = useState(false);
 
   function resetFormState() {
     setProject("");
@@ -88,7 +82,7 @@ export const AddTask = props => {
   //////////////////////////////////////////
   //Serach Project
   const searchProject = async () => {
-    setProjectList(await getAllProject());
+    setProjectList(await getAllProjects());
     setShowProjectModal(true);
   };
   function onCloseProjectModal(val) {

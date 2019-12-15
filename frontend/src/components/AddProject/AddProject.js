@@ -19,7 +19,7 @@ import * as _ from "lodash";
 import SearchModal from "../common/SearchModal";
 
 import {
-  getAllProject,
+  getAllProjects,
   addNewProject,
   getProjectById,
   updateProjectById,
@@ -29,34 +29,32 @@ import {
 import moment from "moment";
 
 export const AddProject = () => {
+  let [projects, setProjects] = useState([]);
   const initialStartDate = formatDate(new Date());
   const initialEndDate = formatDate(getAfterDate(1));
   let [projectList, setProjectList] = useState([]);
   let [projectUpdated, setProjectUpdated] = useState(false);
-  let [projects, setProjects] = useState([]);
-  let [sortMode, setSortMode] = useState(false);
   let [editMode, setEditMode] = useState(false);
   let [projectId, setProjectId] = useState("");
   let [projectName, setProjectName] = useState("");
-
   let [startDate, setStartDate] = useState(initialStartDate);
   let [endDate, setEndDate] = useState(initialEndDate);
   let [dateRequired, setDateRequired] = useState(false);
-
   let [priority, setPriority] = useState("");
   let [statusMessage, setStatusMessage] = useState({
     show: false,
     message: "",
     variant: ""
   });
+  let [sortMode, setSortMode] = useState(false);
   let [startDateSort, setStartDateSort] = useState(false);
   let [endDateSort, setEndDateSort] = useState(false);
   let [prioritySort, setPrioritySort] = useState(false);
 
   const fetchAllProjects = async () => {
     try {
-      setProjects(await getAllProject());
-      setProjectList(await getAllProject());
+      setProjects(await getAllProjects());
+      setProjectList(await getAllProjects());
       setProjectUpdated(false);
     } catch (err) {
       setStatusMessage({
@@ -73,6 +71,7 @@ export const AddProject = () => {
     const sortByField = _.sortBy(projects, field);
     setProjects(sortByField);
   };
+
   const deleteProject = async project => {
     try {
       const resp = await deleteProjectById(project);
@@ -116,8 +115,6 @@ export const AddProject = () => {
     } catch (err) {}
   };
 
-  //Call this function after setStatusMessag to autoHide alert message
-
   const resetFormState = () => {
     setProjectName("");
     setStartDate(initialStartDate);
@@ -140,9 +137,10 @@ export const AddProject = () => {
   let [managerList, setManagerList] = useState([]);
   let [manager, setManager] = useState("");
 
-  const onCloseManagerModal = val => {
+  const onCloseManagerModal = () => {
     setShowManagerModal(false);
   };
+
   const searchManager = async () => {
     setManagerList(await getAllUsers());
     setShowManagerModal(true);
@@ -155,7 +153,7 @@ export const AddProject = () => {
     fetchAllProjects();
   }, [projectUpdated]);
 
-  const handleChange = e => {
+  const handleSearch = e => {
     let newList = [];
     if (e.target.value !== "") {
       newList = projectList.filter(item => {
@@ -379,7 +377,10 @@ export const AddProject = () => {
                   {...formik.getFieldProps("manager")}
                 ></FormControl>
                 <InputGroup.Append>
-                  <Button onClick={searchManager} data-testid="searchManagerBtn">
+                  <Button
+                    onClick={searchManager}
+                    data-testid="searchManagerBtn"
+                  >
                     <i className="fa fa-search"></i>
                   </Button>
                 </InputGroup.Append>
@@ -431,7 +432,7 @@ export const AddProject = () => {
           <Col xs={12} sm={6}>
             <FormControl
               placeholder="Search"
-              onChange={handleChange}
+              onChange={handleSearch}
               className="mb-4"
               name="search"
             />
@@ -490,17 +491,19 @@ export const AddProject = () => {
               {projects.map(project => {
                 return (
                   <ListGroup.Item className="project-list" key={project._id}>
-                    <div>
-                      <p>Project : {project.projectName}</p>
+                    <div className="projectDetails">
                       <div>
-                        <span className="mr-2">
+                        <b>Project : {project.projectName}</b>
+                      </div>
+                      <div>
+                        <div>
                           Start Date :{" "}
                           {project.startDate && formatDate(project.startDate)}
-                        </span>
-                        <span className="ml-5">
+                        </div>
+                        <div>
                           End Date :{" "}
                           {project.endDate && formatDate(project.endDate)}
-                        </span>
+                        </div>
                       </div>
                       <div>
                         <span className="mr-2">
@@ -515,7 +518,7 @@ export const AddProject = () => {
                     </div>
                     <ListGroup>
                       <ListGroup.Item>
-                        <p>Priority : </p> <p>{project.priority}</p>
+                        <i>Priority : {project.priority}</i>
                       </ListGroup.Item>
                     </ListGroup>
                     <div>

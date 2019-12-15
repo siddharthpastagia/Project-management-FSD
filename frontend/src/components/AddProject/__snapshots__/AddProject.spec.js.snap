@@ -220,26 +220,26 @@ exports[`Add Project Component Should render AddProject component 1`] = `
           <div
             class="project-list list-group-item"
           >
-            <div>
-              <p>
-                Project : 
-                ProjectA
-              </p>
+            <div
+              class="projectDetails"
+            >
               <div>
-                <span
-                  class="mr-2"
-                >
+                <b>
+                  Project : 
+                  ProjectA
+                </b>
+              </div>
+              <div>
+                <div>
                   Start Date :
                    
                   2019-12-13
-                </span>
-                <span
-                  class="ml-5"
-                >
+                </div>
+                <div>
                   End Date :
                    
                   2019-12-20
-                </span>
+                </div>
               </div>
               <div>
                 <span
@@ -264,13 +264,10 @@ exports[`Add Project Component Should render AddProject component 1`] = `
               <div
                 class="list-group-item"
               >
-                <p>
+                <i>
                   Priority : 
-                </p>
-                 
-                <p>
                   24
-                </p>
+                </i>
               </div>
             </div>
             <div>

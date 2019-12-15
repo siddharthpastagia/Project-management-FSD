@@ -1,0 +1,234 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Add Task Component Should render AddTask component 1`] = `
+<div>
+  <div
+    class="container"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="col"
+      >
+        <h3
+          class="mt-3"
+        >
+          Task Management
+        </h3>
+      </div>
+    </div>
+    <div
+      class="row"
+    >
+      <div
+        class="mt-3 col"
+      >
+        <form>
+          <label
+            class="form-label"
+          >
+            Search Project
+          </label>
+          <div
+            class="input-group"
+          >
+            <label
+              class="modal-label form-label"
+            />
+            <input
+              class="mb-2 mt-2 form-control"
+              name="project"
+              readonly=""
+              required=""
+              type="hidden"
+              value=""
+            />
+            <div
+              class="input-group-append"
+            >
+              <button
+                class="btn btn-outline-primary"
+                type="button"
+              >
+                <i
+                  class="fa fa-search"
+                />
+              </button>
+            </div>
+          </div>
+          <div
+            class="invalid-feedback"
+          />
+          <label
+            class="mt-2 form-label"
+          >
+            Task Name
+          </label>
+          <input
+            class="mb-2 mt-2 form-control"
+            name="taskName"
+            placeholder="Task name"
+            required=""
+            value=""
+          />
+          <div
+            class="invalid-feedback"
+          />
+          <b>
+            <div
+              class="form-check"
+            >
+              <input
+                class="form-check-input"
+                name="isParentTask"
+                type="checkbox"
+                value="false"
+              />
+              <label
+                class="form-check-label"
+                title=""
+              >
+                Parent Task
+              </label>
+            </div>
+          </b>
+          <label
+            class="mt-2 form-label"
+          >
+            Priority
+          </label>
+          <div
+            class="touched-feedback"
+          />
+          <input
+            class="mb-2 mt-2 form-control"
+            max="30"
+            min="0"
+            name="priority"
+            placeholder="priority"
+            step="1"
+            type="range"
+            value=""
+          />
+          <label
+            class="mt-2 form-label"
+          >
+            Search Parent Task
+          </label>
+          <div
+            class="input-group"
+          >
+            <label
+              class="modal-label form-label"
+            />
+            <input
+              class="mb-2 mt-2 form-control"
+              hidden=""
+              name="parentTask"
+              readonly=""
+              value="[object Object]"
+            />
+            <div
+              class="input-group-append"
+            >
+              <button
+                class="btn btn-outline-primary"
+                type="button"
+              >
+                <i
+                  class="fa fa-search"
+                />
+              </button>
+            </div>
+          </div>
+          <div
+            class="invalid-feedback"
+          />
+          <label
+            class="mt-2 form-label"
+          >
+            Start Date
+          </label>
+          <input
+            class="mb-2 mt-2 form-control"
+            name="startDate"
+            placeholder="Start Date"
+            type="date"
+            value="2019-12-14"
+          />
+          <div
+            class="invalid-feedback"
+          />
+          <label
+            class="mt-2 form-label"
+          >
+            End Date
+          </label>
+          <input
+            class="mb-2 mt-2 form-control"
+            name="endDate"
+            placeholder="End Date"
+            type="date"
+            value="2019-12-15"
+          />
+          <div
+            class="invalid-feedback"
+          />
+          <label
+            class="mt-2 form-label"
+          >
+            Search User
+          </label>
+          <div
+            class="input-group"
+          >
+            <label
+              class="modal-label form-label"
+            />
+            <input
+              class="mb-2 mt-2 form-control"
+              hidden=""
+              name="user"
+              readonly=""
+              value=""
+            />
+            <div
+              class="input-group-append"
+            >
+              <button
+                class="btn btn-outline-primary"
+                type="button"
+              >
+                <i
+                  class="fa fa-search"
+                />
+              </button>
+            </div>
+          </div>
+          <div
+            class="invalid-feedback"
+          />
+          <div
+            class="mt-5 mb-5 text-center"
+          >
+            <button
+              class="ml-2 mr-2 btn btn-primary"
+              disabled=""
+              type="submit"
+            >
+              Add
+            </button>
+            <button
+              class="btn btn-outline-secondary"
+              type="button"
+            >
+              Reset
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+`;

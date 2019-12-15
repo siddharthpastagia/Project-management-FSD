@@ -155,8 +155,6 @@ export const AddUser = () => {
       formik.resetForm();
     }
   });
-  //const [users, setUsers] = useState(usersList);
-  // const [activeSort, setActiveSort] = useState(false);
   return (
     <>
       <Container>
@@ -254,6 +252,11 @@ export const AddUser = () => {
         <hr />
         <Row>
           <Col xs={12} sm={6}>
+            {users.length === 0 && (
+              <Alert variant="warning">
+                You don't have any users in the database!
+              </Alert>
+            )}
             <FormControl
               placeholder="Search"
               onChange={handleChange}
@@ -265,6 +268,7 @@ export const AddUser = () => {
             <Button
               variant="outline-primary"
               className={sortMode && firstNameSort ? "active ml-2" : "ml-2"}
+              data-testid="sortFirstName"
               onClick={() => {
                 handleSort("firstName");
                 setFirstNameSort(true);
@@ -277,6 +281,7 @@ export const AddUser = () => {
             <Button
               variant="outline-primary"
               className={sortMode && lastNameSort ? "active ml-2" : "ml-2"}
+              data-testid="sortLastName"
               onClick={() => {
                 handleSort("lastName");
                 setLastNameSort(true);
@@ -289,6 +294,7 @@ export const AddUser = () => {
             <Button
               variant="outline-primary"
               className={sortMode && empIdSort ? "active ml-2" : "ml-2"}
+              data-testid="sortId"
               onClick={() => {
                 handleSort("empId");
                 setEmpIdSort(true);

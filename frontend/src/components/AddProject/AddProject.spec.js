@@ -1,16 +1,18 @@
 import React from "react";
 import { MemoryRouter as Router } from "react-router-dom";
-import { render, cleanup } from "@testing-library/react";
+import { render, cleanup, wait } from "@testing-library/react";
 import { AddProject } from "./AddProject";
 
 describe("Add Project Component", () => {
   afterEach(cleanup);
-  it("Should render AddProject component", () => {
+  it("Should render AddProject component", async () => {
     const { container } = render(
       <Router>
         <AddProject />
       </Router>
     );
-    expect(container).toMatchSnapshot();
+    await wait(() => {
+      expect(container).toMatchSnapshot();
+    });
   });
 });

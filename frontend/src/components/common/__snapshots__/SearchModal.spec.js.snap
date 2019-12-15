@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Search Modal Component Should render Search Modal component 1`] = `<div />`;
+
+exports[`Search Modal Component should handle onSearch prop 1`] = `
+<div
+  aria-hidden="true"
+/>
+`;

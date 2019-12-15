@@ -9,13 +9,26 @@ exports[`Add User Component Should render Add User component 1`] = `
       class="row"
     >
       <div
-        class="mt-5 col"
+        class="col"
+      >
+        <h3
+          class="mt-3"
+        >
+          User Management
+        </h3>
+      </div>
+    </div>
+    <div
+      class="row"
+    >
+      <div
+        class="mt-2 col"
       >
         <form>
           <input
             class="mb-2 mt-2 form-control"
             name="firstName"
-            placeholder="FirstName"
+            placeholder="First Name"
             required=""
             value=""
           />
@@ -25,7 +38,7 @@ exports[`Add User Component Should render Add User component 1`] = `
           <input
             class="mb-2 mt-2 form-control"
             name="lastName"
-            placeholder="LastName"
+            placeholder="Last Name"
             required=""
             value=""
           />
@@ -43,7 +56,7 @@ exports[`Add User Component Should render Add User component 1`] = `
             class="invalid-feedback"
           />
           <div
-            class="float-right"
+            class="text-center mt-4 mb-2"
           >
             <button
               class="ml-2 mr-2 btn btn-primary"
@@ -80,18 +93,21 @@ exports[`Add User Component Should render Add User component 1`] = `
         Sort By:
         <button
           class="ml-2 btn btn-outline-primary"
+          data-testid="sortFirstName"
           type="button"
         >
           First Name
         </button>
         <button
           class="ml-2 btn btn-outline-primary"
+          data-testid="sortLastName"
           type="button"
         >
           Last Name
         </button>
         <button
           class="ml-2 btn btn-outline-primary"
+          data-testid="sortId"
           type="button"
         >
           ID
@@ -106,7 +122,41 @@ exports[`Add User Component Should render Add User component 1`] = `
       >
         <div
           class="list-group"
-        />
+        >
+          <div
+            class="user-list list-group-item"
+          >
+            <div>
+              <p>
+                FirstName : 
+                User01
+              </p>
+              <p>
+                LastName : 
+                01Last
+              </p>
+              <p>
+                Employee ID : 
+                1
+              </p>
+            </div>
+            <div>
+              <button
+                class="btn btn-outline-primary"
+                type="button"
+              >
+                Edit
+              </button>
+              <br />
+              <button
+                class="mt-2 btn btn-outline-secondary"
+                type="button"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

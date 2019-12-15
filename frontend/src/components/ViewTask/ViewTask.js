@@ -112,7 +112,11 @@ const ViewTask = () => {
                 value={project.projectName}
               ></FormControl>
               <InputGroup.Append>
-                <Button variant="outline-primary" onClick={searchProject}>
+                <Button
+                  variant="outline-primary"
+                  onClick={searchProject}
+                  data-testid="searchIcon"
+                >
                   <i className="fa fa-search"></i>
                 </Button>
               </InputGroup.Append>
@@ -120,7 +124,7 @@ const ViewTask = () => {
           </Col>
           <SearchModal
             id="searchProject"
-            heading="Serach Project"
+            heading="Search Project"
             showModal={showProjectModal}
             onCloseModal={onCloseProjectModal}
             data={projectList}

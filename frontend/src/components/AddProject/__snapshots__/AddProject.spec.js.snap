@@ -9,31 +9,40 @@ exports[`Add Project Component Should render AddProject component 1`] = `
       class="row"
     >
       <div
+        class="col"
+      >
+        <h3
+          class="mt-3"
+        >
+          Project Management
+        </h3>
+      </div>
+    </div>
+    <div
+      class="row"
+    >
+      <div
         class="mt-3 col"
       >
         <form>
           <div
-            class="form-group row"
+            class="form-group"
           >
             <label
-              class="form-label col-form-label col-sm-2"
+              class="form-label"
             >
-              Project Name:
+              Project Name
             </label>
+            <input
+              class="mb-2 mt-2 form-control"
+              name="projectName"
+              placeholder="Project Name"
+              required=""
+              value=""
+            />
             <div
-              class="col-sm-10"
-            >
-              <input
-                class="mb-2 mt-2 form-control"
-                name="projectName"
-                placeholder="ProjectName"
-                required=""
-                value=""
-              />
-              <div
-                class="invalid-feedback"
-              />
-            </div>
+              class="invalid-feedback"
+            />
           </div>
           <div
             class="form-check"
@@ -51,6 +60,11 @@ exports[`Add Project Component Should render AddProject component 1`] = `
               Set Start and End date
             </label>
           </div>
+          <label
+            class="mt-2 form-label"
+          >
+            Start Date
+          </label>
           <input
             class="mb-2 mt-2 form-control"
             disabled=""
@@ -62,6 +76,11 @@ exports[`Add Project Component Should render AddProject component 1`] = `
           <div
             class="invalid-feedback"
           />
+          <label
+            class="form-label"
+          >
+            End Date
+          </label>
           <input
             class="mb-2 mt-2 form-control"
             disabled=""
@@ -73,6 +92,11 @@ exports[`Add Project Component Should render AddProject component 1`] = `
           <div
             class="invalid-feedback"
           />
+          <label
+            class="form-label"
+          >
+            Priority
+          </label>
           <input
             class="mb-2 mt-2 form-control"
             max="30"
@@ -86,6 +110,11 @@ exports[`Add Project Component Should render AddProject component 1`] = `
           <div
             class="invalid-feedback"
           />
+          <label
+            class="form-label"
+          >
+            Serach Manager
+          </label>
           <div
             class="input-group"
           >
@@ -107,7 +136,9 @@ exports[`Add Project Component Should render AddProject component 1`] = `
                 class="btn btn-primary"
                 type="button"
               >
-                Search Manager
+                <i
+                  class="fa fa-search"
+                />
               </button>
             </div>
           </div>
@@ -115,7 +146,7 @@ exports[`Add Project Component Should render AddProject component 1`] = `
             class="invalid-feedback"
           />
           <div
-            class="float-right mt-4"
+            class="text-center mt-4 mb-4"
           >
             <button
               class="ml-2 mr-2 btn btn-primary"
@@ -135,6 +166,41 @@ exports[`Add Project Component Should render AddProject component 1`] = `
       </div>
     </div>
     <hr />
+    <div
+      class="row"
+    >
+      <div
+        class="col-sm-6 col-12"
+      >
+        <input
+          class="mb-4 form-control"
+          placeholder="Search"
+        />
+      </div>
+      <div
+        class="col-sm-6 col-12"
+      >
+        Sort By:
+        <button
+          class="ml-2 btn btn-outline-primary"
+          type="button"
+        >
+          Start Date
+        </button>
+        <button
+          class="ml-2 btn btn-outline-primary"
+          type="button"
+        >
+          End Date
+        </button>
+        <button
+          class="ml-2 btn btn-outline-primary"
+          type="button"
+        >
+          Priority
+        </button>
+      </div>
+    </div>
     <div
       class="row"
     >

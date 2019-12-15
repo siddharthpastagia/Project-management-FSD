@@ -1,0 +1,93 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`View Task Component Should render ViewTask component 1`] = `
+<div>
+  <div
+    class="container"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="col"
+      >
+        <h3
+          class="mt-3"
+        >
+          View Tasks
+        </h3>
+      </div>
+    </div>
+    <div
+      class="row"
+    >
+      <div
+        class="mt-3 col"
+      >
+        <label
+          class="form-label"
+        >
+          Search Project
+        </label>
+        <div
+          class="input-group"
+        >
+          <input
+            class="form-control"
+            name="project"
+            readonly=""
+            required=""
+            value=""
+          />
+          <div
+            class="input-group-append"
+          >
+            <button
+              class="btn btn-outline-primary"
+              data-testid="searchIcon"
+              type="button"
+            >
+              <i
+                class="fa fa-search"
+              />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="mt-3 mb-3 row"
+    >
+      <div
+        class="col-sm-6 col-12"
+      >
+        Sort Task By:
+        <button
+          class="ml-2 btn btn-outline-primary"
+          type="button"
+        >
+          Start Date
+        </button>
+        <button
+          class="ml-2 btn btn-outline-primary"
+          type="button"
+        >
+          End Date
+        </button>
+        <button
+          class="ml-2 btn btn-outline-primary"
+          type="button"
+        >
+          Priority
+        </button>
+      </div>
+    </div>
+    <div
+      class="fade alert alert-warning show"
+      role="alert"
+    >
+      No task available for selected project, please select another project from the list
+    </div>
+  </div>
+</div>
+`;

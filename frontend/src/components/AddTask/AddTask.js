@@ -290,6 +290,7 @@ export const AddTask = props => {
                 <InputGroup.Append>
                   <Button
                     variant="outline-primary"
+                    data-testid="searchProjectBtn"
                     onClick={searchProject}
                     disabled={editTaskObj && props.history.action === "PUSH"}
                   >
@@ -321,6 +322,7 @@ export const AddTask = props => {
               <b>
                 <Form.Check
                   type="checkbox"
+                  data-testid="parentCheckBox"
                   name="isParentTask"
                   value={formik.values.isParentTask}
                   checked={formik.values.isParentTask}
@@ -377,6 +379,7 @@ export const AddTask = props => {
                 ></FormControl>
                 <InputGroup.Append>
                   <Button
+                    data-testid="searchParentTask"
                     variant="outline-primary"
                     onClick={searchParentTask}
                     disabled={formik.values.isParentTask}
@@ -454,6 +457,7 @@ export const AddTask = props => {
                 <InputGroup.Append>
                   <Button
                     variant="outline-primary"
+                    data-testid="searchUserBtn"
                     onClick={searchUser}
                     disabled={formik.values.isParentTask}
                   >

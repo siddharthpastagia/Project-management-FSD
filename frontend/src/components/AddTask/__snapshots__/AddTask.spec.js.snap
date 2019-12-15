@@ -49,6 +49,7 @@ exports[`Add Task Component Should render AddTask component 1`] = `
             >
               <button
                 class="btn btn-outline-primary"
+                data-testid="searchProjectBtn"
                 type="button"
               >
                 <i
@@ -81,6 +82,7 @@ exports[`Add Task Component Should render AddTask component 1`] = `
             >
               <input
                 class="form-check-input"
+                data-testid="parentCheckBox"
                 name="isParentTask"
                 type="checkbox"
                 value="false"
@@ -134,6 +136,7 @@ exports[`Add Task Component Should render AddTask component 1`] = `
             >
               <button
                 class="btn btn-outline-primary"
+                data-testid="searchParentTask"
                 type="button"
               >
                 <i
@@ -198,6 +201,7 @@ exports[`Add Task Component Should render AddTask component 1`] = `
             >
               <button
                 class="btn btn-outline-primary"
+                data-testid="searchUserBtn"
                 type="button"
               >
                 <i

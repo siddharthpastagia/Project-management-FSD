@@ -379,7 +379,7 @@ export const AddProject = () => {
                   {...formik.getFieldProps("manager")}
                 ></FormControl>
                 <InputGroup.Append>
-                  <Button onClick={searchManager}>
+                  <Button onClick={searchManager} data-testid="searchManagerBtn">
                     <i className="fa fa-search"></i>
                   </Button>
                 </InputGroup.Append>

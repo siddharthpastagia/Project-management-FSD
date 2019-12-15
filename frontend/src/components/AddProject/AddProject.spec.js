@@ -93,7 +93,7 @@ describe("Add Project Component", () => {
 
   it("Get project List ", async () => {
     axios.get.mockResolvedValue({ data: [{}] });
-    const { container, getByText } = render(
+    const { getByText } = render(
       <Router>
         <AddProject />
       </Router>
@@ -101,8 +101,19 @@ describe("Add Project Component", () => {
     expect(getByText("Projects are not available in database!!"));
   });
 
+  it("Should able to Search Manager", async () => {
+    const { container, getByText, getByTestId } = render(
+      <Router>
+        <AddProject />
+      </Router>
+    );
+    const serachManagerBtn = getByTestId("searchManagerBtn");
+    expect(serachManagerBtn).not.toBeDisabled();
+    fireEvent.click(serachManagerBtn);
+  });
+
   it("Should able to Suspend Project ", async () => {
-    const { container, getByText, getByPlaceholderText } = render(
+    const { getByText } = render(
       <Router>
         <AddProject />
       </Router>
@@ -115,7 +126,7 @@ describe("Add Project Component", () => {
   });
 
   it("Should able to Update Project ", async () => {
-    const { container, getByPlaceholderText, getByText, getByTestId } = render(
+    const { getByPlaceholderText, getByText, getByTestId } = render(
       <Router>
         <AddProject />
       </Router>
@@ -140,7 +151,7 @@ describe("Add Project Component", () => {
   });
 
   it("Should able to Reset Project Form ", async () => {
-    const { container, getByText, getByPlaceholderText } = render(
+    const { getByText, getByPlaceholderText } = render(
       <Router>
         <AddProject />
       </Router>
@@ -170,7 +181,7 @@ describe("Add Project Component", () => {
     expect(getByText("Project : ProjectA"));
   });
   it("Should able to click on sorting options ", async () => {
-    const { container, getByText, getByTestId } = render(
+    const { getByText, getByTestId } = render(
       <Router>
         <AddProject />
       </Router>

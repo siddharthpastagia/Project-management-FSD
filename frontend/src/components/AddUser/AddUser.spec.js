@@ -39,7 +39,7 @@ describe("Add User Component", () => {
     });
   });
   it("Get user List ", async () => {
-    const { container, getByText } = render(
+    const { getByText } = render(
       <Router>
         <AddUser />
       </Router>
@@ -48,7 +48,7 @@ describe("Add User Component", () => {
   });
 
   it("Should able to Add User ", async () => {
-    const { container, getByText, getByPlaceholderText } = render(
+    const { getByText, getByPlaceholderText } = render(
       <Router>
         <AddUser />
       </Router>
@@ -73,7 +73,7 @@ describe("Add User Component", () => {
   });
 
   it("Should able to Edit User ", async () => {
-    const { container, getByText, getByPlaceholderText } = render(
+    const { getByText, getByPlaceholderText } = render(
       <Router>
         <AddUser />
       </Router>
@@ -95,7 +95,7 @@ describe("Add User Component", () => {
   });
 
   it("Should able to Delete User ", async () => {
-    const { container, getByText, getByPlaceholderText } = render(
+    const { getByText } = render(
       <Router>
         <AddUser />
       </Router>
@@ -108,7 +108,7 @@ describe("Add User Component", () => {
   });
 
   it("Should able to Reset User Form ", async () => {
-    const { container, getByText, getByPlaceholderText } = render(
+    const { getByText, getByPlaceholderText } = render(
       <Router>
         <AddUser />
       </Router>
@@ -124,7 +124,7 @@ describe("Add User Component", () => {
   });
 
   it("Should able to Serach the user from user List ", async () => {
-    const { container, getByText, getByPlaceholderText } = render(
+    const { getByText, getByPlaceholderText } = render(
       <Router>
         <AddUser />
       </Router>
@@ -138,7 +138,7 @@ describe("Add User Component", () => {
     expect(getByText("FirstName : User01"));
   });
   it("Should able to click on sorting options ", async () => {
-    const { container, getByText, getByTestId } = render(
+    const { getByText, getByTestId } = render(
       <Router>
         <AddUser />
       </Router>

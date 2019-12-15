@@ -135,6 +135,7 @@ exports[`Add Project Component Should render AddProject component 1`] = `
             >
               <button
                 class="btn btn-primary"
+                data-testid="searchManagerBtn"
                 type="button"
               >
                 <i

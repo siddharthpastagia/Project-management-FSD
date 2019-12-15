@@ -64,18 +64,21 @@ exports[`View Task Component Should render ViewTask component 1`] = `
         Sort Task By:
         <button
           class="ml-2 btn btn-outline-primary"
+          data-testid="sortStartDate"
           type="button"
         >
           Start Date
         </button>
         <button
           class="ml-2 btn btn-outline-primary"
+          data-testid="sortEndDate"
           type="button"
         >
           End Date
         </button>
         <button
           class="ml-2 btn btn-outline-primary"
+          data-testid="sortPriority"
           type="button"
         >
           Priority

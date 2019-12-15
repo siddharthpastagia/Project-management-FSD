@@ -137,6 +137,7 @@ const ViewTask = () => {
           <Col xs={12} sm={6}>
             Sort Task By:
             <Button
+              data-testid="sortStartDate"
               variant="outline-primary"
               className={sortMode && startDateSort ? "active ml-2" : "ml-2"}
               onClick={() => {
@@ -149,6 +150,7 @@ const ViewTask = () => {
               Start Date
             </Button>
             <Button
+              data-testid="sortEndDate"
               variant="outline-primary"
               className={sortMode && endDateSort ? "active ml-2" : "ml-2"}
               onClick={() => {
@@ -161,6 +163,7 @@ const ViewTask = () => {
               End Date
             </Button>
             <Button
+              data-testid="sortPriority"
               variant="outline-primary"
               className={sortMode && prioritySort ? "active ml-2" : "ml-2"}
               onClick={() => {

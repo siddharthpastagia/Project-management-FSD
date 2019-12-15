@@ -177,6 +177,9 @@ const ViewTask = () => {
             </Button>
           </Col>
         </Row>
+        <Alert variant="info" className="mt-3">
+          Please click on Search icon to view tasks related to that project.
+        </Alert>
         {tasks.length > 0 ? (
           <Row>
             <Col>

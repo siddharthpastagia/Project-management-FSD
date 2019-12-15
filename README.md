@@ -1,3 +1,26 @@
+## PROJECT MANAGEMENT APPLICATION
+
+IT is single page application to do project management. It is developed using ReactJS, ExpressJS, MongoDB and NODEJS.
+
+## GIT REPO FOR PROJECT MANAGEMENT (SOURCE CONTROL MANAGEMENT)
+
+https://github.com/siddharthpastagia/Project-management-FSD
+
+## FRONT END LAYER
+
+To run the front-end for the application, please follow below steps :
+
+- Go to front end folder and run npm i in that folder
+- Change .env variable if there is any need to change API path
+- start the application using npm start
+
+## BACK END LAYER
+
+To run the backend for the application, please follow below steps:
+
+- Go to backend folder and run npm i in that folder
+- run nodemon server.js
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

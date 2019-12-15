@@ -86,6 +86,12 @@ exports[`View Task Component Should render ViewTask component 1`] = `
       </div>
     </div>
     <div
+      class="fade mt-3 alert alert-info show"
+      role="alert"
+    >
+      Please click on Search icon to view tasks related to that project.
+    </div>
+    <div
       class="fade alert alert-warning show"
       role="alert"
     >

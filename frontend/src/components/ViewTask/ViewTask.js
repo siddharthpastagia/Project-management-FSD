@@ -177,7 +177,7 @@ const ViewTask = () => {
             <Col>
               <table className="table table-bordered mt-5">
                 <thead>
-                  <tr>
+                  <tr className="table-primary">
                     <th>Task</th>
                     <th>Parent</th>
                     <th>Priority</th>
@@ -189,7 +189,7 @@ const ViewTask = () => {
                 <tbody>
                   {tasks.map(task => {
                     return (
-                      <tr>
+                      <tr className="table-light">
                         <td>{task.taskName}</td>
                         <td>{task.parentTask && task.parentTask.taskName}</td>
                         <td>{task.priority}</td>
@@ -205,10 +205,9 @@ const ViewTask = () => {
                           <Button
                             variant="outline-primary"
                             className="ml-2"
-                            disabled={
-                              taskCompleted || task.status === "Completed"
-                            }
-                            onClick={async () => {
+                            disabled={task.status === "Completed"}
+                            onClick={async e => {
+                              e.target.disabled = true;
                               await updateTaskAsComplete(task);
                               setTaskCompleted(true);
                             }}

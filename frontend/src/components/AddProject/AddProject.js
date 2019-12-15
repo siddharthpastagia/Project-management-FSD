@@ -14,6 +14,7 @@ import {
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import "./AddProject.scss";
+import * as _ from "lodash";
 
 import SearchModal from "../common/SearchModal";
 
@@ -30,10 +31,10 @@ import moment from "moment";
 export const AddProject = () => {
   const initialStartDate = formatDate(new Date());
   const initialEndDate = formatDate(getAfterDate(1));
-
+  let [projectList, setProjectList] = useState([]);
   let [projectUpdated, setProjectUpdated] = useState(false);
   let [projects, setProjects] = useState([]);
-
+  let [sortMode, setSortMode] = useState(false);
   let [editMode, setEditMode] = useState(false);
   let [projectId, setProjectId] = useState("");
   let [projectName, setProjectName] = useState("");
@@ -48,10 +49,14 @@ export const AddProject = () => {
     message: "",
     variant: ""
   });
+  let [startDateSort, setStartDateSort] = useState(false);
+  let [endDateSort, setEndDateSort] = useState(false);
+  let [prioritySort, setPrioritySort] = useState(false);
 
   const fetchAllProjects = async () => {
     try {
       setProjects(await getAllProject());
+      setProjectList(await getAllProject());
       setProjectUpdated(false);
     } catch (err) {
       setStatusMessage({
@@ -63,6 +68,11 @@ export const AddProject = () => {
     }
   };
 
+  const handleSort = field => {
+    setSortMode(true);
+    const sortByField = _.sortBy(projects, field);
+    setProjects(sortByField);
+  };
   const deleteProject = async project => {
     try {
       const resp = await deleteProjectById(project);
@@ -154,6 +164,28 @@ export const AddProject = () => {
     fetchAllProjects();
   }, [projectUpdated]);
 
+  const handleChange = e => {
+    let newList = [];
+    if (e.target.value !== "") {
+      newList = projectList.filter(item => {
+        const pData = item.projectName.toLowerCase();
+        const priorityData =
+          item.priority !== null ? item.priority.toString().toLowerCase() : "";
+        const startDateData = formatDate(item.startDate).toLowerCase();
+        const endDateData = formatDate(item.endDate).toLowerCase();
+        const filter = e.target.value.toLowerCase();
+        return (
+          pData.includes(filter) ||
+          priorityData.includes(filter) ||
+          startDateData.includes(filter) ||
+          endDateData.includes(filter)
+        );
+      });
+    } else {
+      newList = projectList;
+    }
+    setProjects(newList);
+  };
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -402,6 +434,54 @@ export const AddProject = () => {
           </Col>
         </Row>
         <hr />
+        <Row>
+          <Col xs={12} sm={6}>
+            <FormControl
+              placeholder="Search"
+              onChange={handleChange}
+              className="mb-4"
+            />
+          </Col>
+          <Col xs={12} sm={6}>
+            Sort By:
+            <Button
+              variant="outline-primary"
+              className={sortMode && startDateSort ? "active ml-2" : "ml-2"}
+              onClick={() => {
+                handleSort("startDate");
+                setStartDateSort(true);
+                setEndDateSort(false);
+                setPrioritySort(false);
+              }}
+            >
+              Start Date
+            </Button>
+            <Button
+              variant="outline-primary"
+              className={sortMode && endDateSort ? "active ml-2" : "ml-2"}
+              onClick={() => {
+                handleSort("endDate");
+                setStartDateSort(false);
+                setEndDateSort(true);
+                setPrioritySort(false);
+              }}
+            >
+              End Date
+            </Button>
+            <Button
+              variant="outline-primary"
+              className={sortMode && prioritySort ? "active ml-2" : "ml-2"}
+              onClick={() => {
+                handleSort("priority");
+                setStartDateSort(false);
+                setEndDateSort(false);
+                setPrioritySort(true);
+              }}
+            >
+              Priority
+            </Button>
+          </Col>
+        </Row>
         <Row>
           <Col>
             {projects.length === 0 && (

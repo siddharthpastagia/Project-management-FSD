@@ -180,7 +180,7 @@ export const AddUser = () => {
             <form onSubmit={formik.handleSubmit}>
               <FormControl
                 required
-                placeholder="FirstName"
+                placeholder="First Name"
                 name="firstName"
                 errors={formik.errors.firstName}
                 className={
@@ -196,7 +196,7 @@ export const AddUser = () => {
                 {formik.errors.firstName}
               </FormControl.Feedback>
               <FormControl
-                placeholder="LastName"
+                placeholder="Last Name"
                 name="lastName"
                 required
                 errors={formik.errors.lastName}

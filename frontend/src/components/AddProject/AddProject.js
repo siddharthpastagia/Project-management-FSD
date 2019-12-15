@@ -118,15 +118,6 @@ export const AddProject = () => {
 
   //Call this function after setStatusMessag to autoHide alert message
 
-  const autoHideAlert = () => {
-    setTimeout(() => {
-      setStatusMessage({
-        ...statusMessage,
-        show: false
-      });
-    }, 5000);
-  };
-
   const resetFormState = () => {
     setProjectName("");
     setStartDate(initialStartDate);
@@ -349,6 +340,7 @@ export const AddProject = () => {
                 min="0"
                 max="30"
                 step="1"
+                data-testid="priorityField"
                 errors={formik.errors.priority}
                 className={
                   formik.touched.priority
@@ -398,6 +390,7 @@ export const AddProject = () => {
 
               <div className="text-center mt-4 mb-4">
                 <Button
+                  data-testid="updateProject"
                   variant="primary"
                   disabled={!formik.isValid || !formik.dirty}
                   type="submit"
@@ -440,6 +433,7 @@ export const AddProject = () => {
               placeholder="Search"
               onChange={handleChange}
               className="mb-4"
+              name="search"
             />
           </Col>
           <Col xs={12} sm={6}>
@@ -447,6 +441,7 @@ export const AddProject = () => {
             <Button
               variant="outline-primary"
               className={sortMode && startDateSort ? "active ml-2" : "ml-2"}
+              data-testid="sortStartDate"
               onClick={() => {
                 handleSort("startDate");
                 setStartDateSort(true);
@@ -459,6 +454,7 @@ export const AddProject = () => {
             <Button
               variant="outline-primary"
               className={sortMode && endDateSort ? "active ml-2" : "ml-2"}
+              data-testid="sortEndDate"
               onClick={() => {
                 handleSort("endDate");
                 setStartDateSort(false);
@@ -471,6 +467,7 @@ export const AddProject = () => {
             <Button
               variant="outline-primary"
               className={sortMode && prioritySort ? "active ml-2" : "ml-2"}
+              data-testid="sortPriority"
               onClick={() => {
                 handleSort("priority");
                 setStartDateSort(false);

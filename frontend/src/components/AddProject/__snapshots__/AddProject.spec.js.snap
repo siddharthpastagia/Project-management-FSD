@@ -71,7 +71,7 @@ exports[`Add Project Component Should render AddProject component 1`] = `
             name="startDate"
             placeholder="Start Date"
             type="date"
-            value="2019-12-14"
+            value="2019-12-15"
           />
           <div
             class="invalid-feedback"
@@ -87,7 +87,7 @@ exports[`Add Project Component Should render AddProject component 1`] = `
             name="endDate"
             placeholder="End Date"
             type="date"
-            value="2019-12-15"
+            value="2019-12-16"
           />
           <div
             class="invalid-feedback"
@@ -99,6 +99,7 @@ exports[`Add Project Component Should render AddProject component 1`] = `
           </label>
           <input
             class="mb-2 mt-2 form-control"
+            data-testid="priorityField"
             max="30"
             min="0"
             name="priority"
@@ -150,6 +151,7 @@ exports[`Add Project Component Should render AddProject component 1`] = `
           >
             <button
               class="ml-2 mr-2 btn btn-primary"
+              data-testid="updateProject"
               disabled=""
               type="submit"
             >
@@ -174,6 +176,7 @@ exports[`Add Project Component Should render AddProject component 1`] = `
       >
         <input
           class="mb-4 form-control"
+          name="search"
           placeholder="Search"
         />
       </div>
@@ -183,18 +186,21 @@ exports[`Add Project Component Should render AddProject component 1`] = `
         Sort By:
         <button
           class="ml-2 btn btn-outline-primary"
+          data-testid="sortStartDate"
           type="button"
         >
           Start Date
         </button>
         <button
           class="ml-2 btn btn-outline-primary"
+          data-testid="sortEndDate"
           type="button"
         >
           End Date
         </button>
         <button
           class="ml-2 btn btn-outline-primary"
+          data-testid="sortPriority"
           type="button"
         >
           Priority
@@ -208,14 +214,81 @@ exports[`Add Project Component Should render AddProject component 1`] = `
         class="col"
       >
         <div
-          class="fade alert alert-warning show"
-          role="alert"
-        >
-          Projects are not available in database!!
-        </div>
-        <div
           class="list-group"
-        />
+        >
+          <div
+            class="project-list list-group-item"
+          >
+            <div>
+              <p>
+                Project : 
+                ProjectA
+              </p>
+              <div>
+                <span
+                  class="mr-2"
+                >
+                  Start Date :
+                   
+                  2019-12-13
+                </span>
+                <span
+                  class="ml-5"
+                >
+                  End Date :
+                   
+                  2019-12-20
+                </span>
+              </div>
+              <div>
+                <span
+                  class="mr-2"
+                >
+                  No of tasks: 
+                  1
+                </span>
+              </div>
+              <div>
+                <span
+                  class="mr-2"
+                >
+                  Completed: 
+                  1
+                </span>
+              </div>
+            </div>
+            <div
+              class="list-group"
+            >
+              <div
+                class="list-group-item"
+              >
+                <p>
+                  Priority : 
+                </p>
+                 
+                <p>
+                  24
+                </p>
+              </div>
+            </div>
+            <div>
+              <button
+                class="btn btn-outline-primary"
+                type="button"
+              >
+                Update
+              </button>
+              <br />
+              <button
+                class="mt-2 btn btn-outline-secondary"
+                type="button"
+              >
+                Suspend
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

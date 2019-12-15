@@ -55,16 +55,6 @@ export const AddTask = props => {
   let [parentTaskList, setParentTaskList] = useState([]);
   let [showParentModal, setShowParentModal] = useState(false);
 
-  //Call this function after setStatusMessag to autoHide alert message
-  function autoHideAlert() {
-    setTimeout(() => {
-      setStatusMessage({
-        ...statusMessage,
-        show: false
-      });
-    }, 5000);
-  }
-
   function resetFormState() {
     setProject("");
     setParentTask("");
@@ -446,7 +436,6 @@ export const AddTask = props => {
                   <FormLabel className="modal-label"></FormLabel>
                 )}
                 <FormControl
-                  required
                   hidden
                   readOnly
                   name="user"
